@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import Providers from "@/providers";
 
@@ -34,9 +35,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         inter.variable,
       )}
     >
-      <Providers>
-        <body className="min-h-full flex flex-col">{children}</body>
-      </Providers>
+      <body className="min-h-full flex flex-col">
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
+      </body>
     </html>
   );
 }
