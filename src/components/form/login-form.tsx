@@ -21,10 +21,11 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useLogin } from "@/hooks";
+import { useGoogleOAuth, useLogin } from "@/hooks";
 import { UserValidation } from "@/validation";
 import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
+import { GoogleLogin } from "@react-oauth/google";
 
 export function LoginForm({
   className,
@@ -32,6 +33,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const { mutate: login, isPending: loginPending } = useLogin();
   const router = useRouter();
+  const { mutate: googleLogin } = useGoogleOAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm({
@@ -69,6 +71,31 @@ export function LoginForm({
       });
     },
   });
+
+  const handleGoogleSuccess = (credentialResponse: { credential?: string }) => {
+    const idToken = credentialResponse.credential;
+
+    if (!idToken) {
+      toast.add({
+        title: "Google Oauth Faild",
+        type: "error",
+      });
+      return;
+    }
+
+    googleLogin(
+      { idToken },
+      {
+        onSuccess: () => {
+          toast.add({
+            title: "Google login successfully",
+            type: "success",
+          });
+        },
+      },
+    );
+  };
+  const handleGoogleError = () => {};
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -169,9 +196,10 @@ export function LoginForm({
                     <>login</>
                   )}
                 </Button>
-                <Button variant="outline" type="button">
-                  Login with Google
-                </Button>
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                />
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="/">Sign up</a>
                 </FieldDescription>
