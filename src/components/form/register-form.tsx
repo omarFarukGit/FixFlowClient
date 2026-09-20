@@ -37,10 +37,10 @@ export function RegisterForm() {
   type PatientDefaultValues = z.infer<typeof UserRegistrationZodSchema>;
 
   const defaultValues: PatientDefaultValues = {
-    name: "Mir",
-    email: "mir@gmail.com",
-    password: "@User123456",
-    confirmPassword: "@User123456",
+    name: "Customer",
+    email: "customer@gmail.com",
+    password: "@Customer123456",
+    confirmPassword: "@Customer123456",
     role: "CUSTOMER",
   };
 

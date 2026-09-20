@@ -5,6 +5,7 @@ import {
   userLogin,
   userLogout,
   userRegistation,
+  verifyAccount,
 } from "@/api";
 
 export function useLogin() {
@@ -17,6 +18,13 @@ export function useRegistration() {
   return useMutation({
     //mutationFn
     mutationFn: userRegistation,
+  });
+}
+
+export function useVerifyAccount() {
+  return useMutation({
+    //mutationFn
+    mutationFn: verifyAccount,
   });
 }
 
