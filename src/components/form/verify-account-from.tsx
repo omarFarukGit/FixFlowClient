@@ -87,7 +87,7 @@ export default function VerifyAccountForm() {
       onError: (err) => {
         toast.add({
           title: "Verification failure",
-          description: err.message || "Something went wrong. Please try again",
+          description: "Otp invaild",
           type: "error",
         });
       },

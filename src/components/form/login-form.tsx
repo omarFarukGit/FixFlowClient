@@ -201,7 +201,7 @@ export function LoginForm({
                   onError={handleGoogleError}
                 />
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/">Sign up</a>
+                  Don&apos;t have an account? <a href="/register">Rgister</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

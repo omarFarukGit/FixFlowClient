@@ -7,7 +7,6 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
     <div>
       <Header />
       {children}
-      <Footer />
     </div>
   );
 }

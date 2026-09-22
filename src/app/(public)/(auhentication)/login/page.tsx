@@ -1,31 +1,25 @@
-import Link from "next/link";
 import { LoginForm } from "@/components/form/login-form";
+import Image from "next/image";
 
-const LogingPage = () => {
+export default function LoginPage() {
   return (
-    <div className="flex min-h-[80vh] items-center justify-center">
-      <div className="w-full max-w-md space-y-6 rounded-lg border p-4 shadow-lg">
-        {/* From Text  */}
-        <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold">Welcome Back!</h1>
-          <p className="text-gray-500">
-            Enter your credentials to access your account
-          </p>
+    <div className="grid min-h-svh lg:grid-cols-2 ">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-xs">
+            <LoginForm />
+          </div>
         </div>
-
-        {/* From  */}
-        <LoginForm />
-        <div className="flex items-center justify-center">
-          <p className="text-xs text-gray-500">
-            Don&apos;t have an account?{" "}
-            <Link href={"/register"} className="text-red-400">
-              Register
-            </Link>
-          </p>
-        </div>
+      </div>
+      <div className="relative  hidden  lg:block w-full h-full">
+        <Image
+          src="/images/Side_Image.png"
+          alt="Image"
+          width={500}
+          height={500}
+          className="absolute w-full h-full  dark:brightness-[0.2] dark:grayscale"
+        />
       </div>
     </div>
   );
-};
-
-export default LogingPage;
+}
