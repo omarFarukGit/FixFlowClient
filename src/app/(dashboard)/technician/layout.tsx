@@ -1,4 +1,5 @@
 import RoleGuard from "@/components/auth/role-guard";
+import DashboardShell from "@/components/dashboard/dashboard-shell";
 import React, { ReactNode } from "react";
 
 export default function TechnicianLayout({
@@ -6,5 +7,8 @@ export default function TechnicianLayout({
 }: {
   children: ReactNode;
 }) {
-  return <RoleGuard roles={["TECHNICIAN"]}>{children}</RoleGuard>;
+  return <RoleGuard roles={["TECHNICIAN"]}>
+  {/* biome-ignore lint/a11y/useValidAriaRole: `role` is the dashboard role prop, not an ARIA role. */}
+  <DashboardShell role="TECHNICIAN">{children}</DashboardShell>
+</RoleGuard>
 }

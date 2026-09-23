@@ -12,148 +12,66 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { UserRole } from "@/types/user.type";
+import { adminRoutes } from "@/routes";
+import { customerRoutes } from "@/routes/customer.routes";
+import { technicianRoutes } from "@/routes/technician.routes";
+import Link from "next/link";
+import Image from "next/image";
 
 // This is sample data.
 const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+
   navMain: [
     {
-      title: "Getting Started",
+      title: "Mangement",
       url: "#",
       items: [
         {
-          title: "Installation",
-          url: "#",
+          title: "Overview",
+          url: "/admin",
         },
         {
-          title: "Project Structure",
-          url: "#",
+          title: "/admin/approve-technician",
+          url: "/admin/technician",
         },
       ],
     },
-    {
-      title: "Build Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
+
   ],
 };
 
-export function DashboardSidebar({
-  ...props
-}: React.ComponentProps<typeof Sidebar>) {
+
+const sidebarRoutes: Record<
+  UserRole,
+  typeof adminRoutes | typeof customerRoutes | typeof technicianRoutes
+> = {
+    ADMIN:adminRoutes,
+    CUSTOMER:customerRoutes,
+   TECHNICIAN:technicianRoutes
+}
+
+export function DashboardSidebar({role}:{role:UserRole}) {
+
+    const routes=sidebarRoutes[role]
   return (
-    <Sidebar {...props}>
-      <SidebarHeader>logo</SidebarHeader>
+    <Sidebar >
+      <SidebarHeader>
+        {/* Logo */}
+        <Link href="/" className="shrink-0 rounded-full dark:bg-white">
+          <Image
+            src="/images/fix-flow-logo-main.png"
+            alt="FixFlow logo"
+            priority
+            className="object-cover"
+            width={80}
+            height={80}
+          />
+        </Link>
+      </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
+        {routes.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
