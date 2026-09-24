@@ -21,7 +21,6 @@ import Image from "next/image";
 
 // This is sample data.
 const data = {
-
   navMain: [
     {
       title: "Mangement",
@@ -37,25 +36,22 @@ const data = {
         },
       ],
     },
-
   ],
 };
-
 
 const sidebarRoutes: Record<
   UserRole,
   typeof adminRoutes | typeof customerRoutes | typeof technicianRoutes
 > = {
-    ADMIN:adminRoutes,
-    CUSTOMER:customerRoutes,
-   TECHNICIAN:technicianRoutes
-}
+  ADMIN: adminRoutes,
+  CUSTOMER: customerRoutes,
+  TECHNICIAN: technicianRoutes,
+};
 
-export function DashboardSidebar({role}:{role:UserRole}) {
-
-    const routes=sidebarRoutes[role]
+export function DashboardSidebar({ role }: { role: UserRole }) {
+  const routes = sidebarRoutes[role];
   return (
-    <Sidebar >
+    <Sidebar>
       <SidebarHeader>
         {/* Logo */}
         <Link href="/" className="shrink-0 rounded-full dark:bg-white">

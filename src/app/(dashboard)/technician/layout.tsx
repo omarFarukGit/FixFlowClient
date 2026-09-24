@@ -7,8 +7,10 @@ export default function TechnicianLayout({
 }: {
   children: ReactNode;
 }) {
-  return <RoleGuard roles={["TECHNICIAN"]}>
-  {/* biome-ignore lint/a11y/useValidAriaRole: `role` is the dashboard role prop, not an ARIA role. */}
-  <DashboardShell role="TECHNICIAN">{children}</DashboardShell>
-</RoleGuard>
+  return (
+    <RoleGuard roles={["TECHNICIAN"]}>
+      {/* biome-ignore lint/a11y/useValidAriaRole: `role` is the dashboard role prop, not an ARIA role. */}
+      <DashboardShell role="TECHNICIAN">{children}</DashboardShell>
+    </RoleGuard>
+  );
 }
