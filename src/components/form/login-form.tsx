@@ -111,9 +111,7 @@ export function LoginForm({
     });
   };
 
-  const handleGoogleSuccess = (credentialResponse: {
-    credential?: string;
-  }) => {
+  const handleGoogleSuccess = (credentialResponse: { credential?: string }) => {
     const idToken = credentialResponse.credential;
 
     if (!idToken) {
@@ -162,9 +160,7 @@ export function LoginForm({
         <CardContent>
           {/* Demo Credentials */}
           <div className="mb-6 rounded-lg border bg-muted/40 p-4">
-            <p className="mb-3 text-sm font-medium">
-              Demo Login
-            </p>
+            <p className="mb-3 text-sm font-medium">Demo Login</p>
 
             <div className="grid grid-cols-3 gap-2">
               <Button
@@ -207,32 +203,25 @@ export function LoginForm({
               <form.Field name="email">
                 {(field) => {
                   const isInvalid =
-                    field.state.meta.isTouched &&
-                    !field.state.meta.isValid;
+                    field.state.meta.isTouched && !field.state.meta.isValid;
 
                   return (
                     <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor="email">
-                        Email
-                      </FieldLabel>
+                      <FieldLabel htmlFor="email">Email</FieldLabel>
 
                       <Input
                         id={field.name}
                         placeholder="m@example.com"
                         name={field.name}
                         value={field.state.value}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
+                        onChange={(e) => field.handleChange(e.target.value)}
                         onBlur={field.handleBlur}
                         autoComplete="email"
                         aria-invalid={isInvalid}
                       />
 
                       {isInvalid && (
-                        <FieldError
-                          errors={field.state.meta.errors}
-                        />
+                        <FieldError errors={field.state.meta.errors} />
                       )}
                     </Field>
                   );
@@ -243,15 +232,12 @@ export function LoginForm({
               <form.Field name="password">
                 {(field) => {
                   const isInvalid =
-                    field.state.meta.isTouched &&
-                    !field.state.meta.isValid;
+                    field.state.meta.isTouched && !field.state.meta.isValid;
 
                   return (
                     <Field data-invalid={isInvalid}>
                       <div className="flex items-center">
-                        <FieldLabel htmlFor="password">
-                          Password
-                        </FieldLabel>
+                        <FieldLabel htmlFor="password">Password</FieldLabel>
 
                         <a
                           href="/forgot-password"
@@ -264,16 +250,10 @@ export function LoginForm({
                       <div className="relative">
                         <Input
                           id={field.name}
-                          type={
-                            showPassword
-                              ? "text"
-                              : "password"
-                          }
+                          type={showPassword ? "text" : "password"}
                           name={field.name}
                           value={field.state.value}
-                          onChange={(e) =>
-                            field.handleChange(e.target.value)
-                          }
+                          onChange={(e) => field.handleChange(e.target.value)}
                           onBlur={field.handleBlur}
                           aria-invalid={isInvalid}
                         />
@@ -281,9 +261,7 @@ export function LoginForm({
                         <button
                           className="absolute right-3 top-1/2 -translate-y-1/2"
                           type="button"
-                          onClick={() =>
-                            setShowPassword((prev) => !prev)
-                          }
+                          onClick={() => setShowPassword((prev) => !prev)}
                         >
                           {showPassword ? (
                             <EyeClosed className="size-4" />
@@ -294,9 +272,7 @@ export function LoginForm({
                       </div>
 
                       {isInvalid && (
-                        <FieldError
-                          errors={field.state.meta.errors}
-                        />
+                        <FieldError errors={field.state.meta.errors} />
                       )}
                     </Field>
                   );
@@ -328,10 +304,7 @@ export function LoginForm({
 
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
-                  <a
-                    href="/register"
-                    className="underline underline-offset-4"
-                  >
+                  <a href="/register" className="underline underline-offset-4">
                     Register
                   </a>
                 </FieldDescription>

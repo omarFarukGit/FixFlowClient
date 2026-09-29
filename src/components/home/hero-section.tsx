@@ -2,13 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  CheckCircle2,
-  ShieldCheck,
-  Star,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, ShieldCheck, Star, Zap } from "lucide-react";
 
 export default function HeroSection() {
   return (
@@ -30,9 +24,7 @@ export default function HeroSection() {
             {/* Heading */}
             <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               Trusted Service.
-              <span className="block text-primary">
-                Better Living.
-              </span>
+              <span className="block text-primary">Better Living.</span>
             </h1>
 
             {/* Description */}
@@ -77,10 +69,7 @@ export default function HeroSection() {
                 text="Secure Payment"
               />
 
-              <TrustItem
-                icon={<Star className="size-4" />}
-                text="Rated Pros"
-              />
+              <TrustItem icon={<Star className="size-4" />} text="Rated Pros" />
             </div>
           </div>
 
@@ -122,9 +111,7 @@ export default function HeroSection() {
 
               <div>
                 <p className="text-sm font-bold text-foreground">4.9/5</p>
-                <p className="text-xs text-muted-foreground">
-                  Customer Rating
-                </p>
+                <p className="text-xs text-muted-foreground">Customer Rating</p>
               </div>
             </div>
           </div>
@@ -134,13 +121,7 @@ export default function HeroSection() {
   );
 }
 
-function TrustItem({
-  icon,
-  text,
-}: {
-  icon: React.ReactNode;
-  text: string;
-}) {
+function TrustItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <div className="flex items-center gap-2 text-sm text-muted-foreground">
       <span className="text-primary">{icon}</span>

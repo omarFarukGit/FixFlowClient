@@ -71,10 +71,7 @@ export default function HowFixFlowWorks() {
               const Icon = step.icon;
 
               return (
-                <div
-                  key={step.number}
-                  className="group relative text-center"
-                >
+                <div key={step.number} className="group relative text-center">
                   {/* Icon */}
                   <div className="relative mx-auto flex size-24 items-center justify-center rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary/30 group-hover:shadow-lg">
                     <div className="flex size-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">

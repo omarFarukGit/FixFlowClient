@@ -1,12 +1,11 @@
-import HowFixFlowWorks from '@/components/home/how-fixflow-works'
-
+import HowFixFlowWorks from "@/components/home/how-fixflow-works";
 
 function HowWorkIt() {
   return (
     <div>
-      <HowFixFlowWorks/>
+      <HowFixFlowWorks />
     </div>
-  )
+  );
 }
 
-export default HowWorkIt
+export default HowWorkIt;

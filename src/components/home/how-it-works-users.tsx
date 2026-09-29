@@ -183,10 +183,7 @@ export default function HowItWorksUsers() {
                     const StepIcon = step.icon;
 
                     return (
-                      <div
-                        key={step.title}
-                        className="relative flex gap-4"
-                      >
+                      <div key={step.title} className="relative flex gap-4">
                         {/* Connecting line */}
                         {index !== user.steps.length - 1 && (
                           <div className="absolute left-5 top-10 h-[calc(100%+4px)] w-px bg-border" />
