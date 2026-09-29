@@ -4,6 +4,7 @@ import HeroSection from "@/components/home/hero-section";
 import HowFixFlowWorks from "@/components/home/how-fixflow-works";
 import HowItWorksUsers from "@/components/home/how-it-works-users";
 import ServiceWorkflow from "@/components/home/service-workflow";
+import ServicesSection from "@/components/home/services-section";
 import WhyChooseFixFlow from "@/components/home/why-choose-fixflow";
 
 export default function HomePage() {
@@ -11,7 +12,8 @@ export default function HomePage() {
     <main>
       <HeroSection />
 
-      {/* Popular Services */}
+      {/* Services */}
+      <ServicesSection />
       {/* How It Works */}
       <HowFixFlowWorks />
       {/* Why Choose FixFlow */}
