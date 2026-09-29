@@ -1,5 +1,15 @@
-import React from "react";
+import HeroSection from "@/components/home/hero-section";
 
-export default function page() {
-  return <div>Home</div>;
+export default function HomePage() {
+  return (
+    <main>
+      <HeroSection />
+
+      {/* Popular Services */}
+      {/* How It Works */}
+      {/* Why Choose FixFlow */}
+      {/* Reviews */}
+      {/* CTA */}
+    </main>
+  );
 }

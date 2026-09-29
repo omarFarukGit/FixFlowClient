@@ -11,7 +11,7 @@ export default function RegisterPage() {
           alt="Image"
           width={500}
           height={500}
-          className="absolute w-full h-full  dark:brightness-[0.2] dark:grayscale"
+          className="absolute w-full h-full  "
         />
       </div>
       <div className="flex flex-col gap-4 p-6 md:p-10">
