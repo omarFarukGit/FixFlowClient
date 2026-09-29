@@ -1,4 +1,5 @@
 import HeroSection from "@/components/home/hero-section";
+import HowFixFlowWorks from "@/components/home/how-fixflow-works";
 
 export default function HomePage() {
   return (
@@ -7,6 +8,7 @@ export default function HomePage() {
 
       {/* Popular Services */}
       {/* How It Works */}
+      <HowFixFlowWorks />
       {/* Why Choose FixFlow */}
       {/* Reviews */}
       {/* CTA */}
