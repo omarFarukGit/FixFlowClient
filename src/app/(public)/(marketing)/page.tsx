@@ -1,3 +1,4 @@
+import CtaSection from "@/components/home/cta-section";
 import CustomerReviews from "@/components/home/customer-reviews";
 import HeroSection from "@/components/home/hero-section";
 import HowFixFlowWorks from "@/components/home/how-fixflow-works";
@@ -23,6 +24,7 @@ export default function HomePage() {
       {/* Reviews */}
       <CustomerReviews />
       {/* CTA */}
+      <CtaSection />
     </main>
   );
 }
