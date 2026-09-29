@@ -1,3 +1,4 @@
+import CustomerReviews from "@/components/home/customer-reviews";
 import HeroSection from "@/components/home/hero-section";
 import HowFixFlowWorks from "@/components/home/how-fixflow-works";
 import HowItWorksUsers from "@/components/home/how-it-works-users";
@@ -20,6 +21,7 @@ export default function HomePage() {
       <ServiceWorkflow />
 
       {/* Reviews */}
+      <CustomerReviews />
       {/* CTA */}
     </main>
   );
