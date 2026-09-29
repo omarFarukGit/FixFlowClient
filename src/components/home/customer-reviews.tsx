@@ -94,9 +94,7 @@ export default function CustomerReviews() {
                     {review.name}
                   </h3>
 
-                  <p className="text-sm text-muted-foreground">
-                    {review.role}
-                  </p>
+                  <p className="text-sm text-muted-foreground">{review.role}</p>
                 </div>
               </div>
             </article>
@@ -115,8 +113,8 @@ export default function CustomerReviews() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">4.9/5</span>{" "}
-            average customer rating
+            <span className="font-semibold text-foreground">4.9/5</span> average
+            customer rating
           </p>
         </div>
       </div>
