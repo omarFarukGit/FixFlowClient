@@ -17,7 +17,7 @@ export default function ServicesCta() {
             We&apos;ll help connect you with the right professional.
           </p>
 
-          <Button  className="mt-6">
+          <Button className="mt-6">
             <Link href="/login" className="flex justify-center items-center">
               Login to Request a Service
               <ArrowRight className="ml-2 h-4 w-4" />

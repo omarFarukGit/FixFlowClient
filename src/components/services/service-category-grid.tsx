@@ -50,8 +50,7 @@ const categories = [
   },
   {
     name: "Automotive",
-    description:
-      "Vehicle repair, maintenance, and other automotive services.",
+    description: "Vehicle repair, maintenance, and other automotive services.",
     icon: Car,
   },
   {
@@ -91,9 +90,7 @@ export default function ServiceCategoryGrid() {
                     <Icon className="h-6 w-6" />
                   </div>
 
-                  <h3 className="text-lg font-semibold">
-                    {category.name}
-                  </h3>
+                  <h3 className="text-lg font-semibold">{category.name}</h3>
 
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
                     {category.description}
