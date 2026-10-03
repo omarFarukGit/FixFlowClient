@@ -12,8 +12,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetPayments } from "@/hooks";
-
-// তোমার actual hook এখানে import করবে
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import ReviewModal from "./review-modal";
+import { useState } from "react";
 
 type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED" | "REFUNDED";
 
@@ -120,6 +122,7 @@ export default function PaymentList() {
 
 function PaymentCard({ payment }: { payment: IPayment }) {
   const status = statusConfig[payment.status];
+  const [reviewOpen, setReviewOpen] = useState(false);
 
   const amount = Number(payment.amount);
 
@@ -145,13 +148,24 @@ function PaymentCard({ payment }: { payment: IPayment }) {
             </div>
           </div>
 
-          <Badge variant={status.variant}>
-            {payment.status === "PAID" && (
-              <CheckCircle2 className="mr-1 size-3.5" />
-            )}
+          <div className=" flex justify-center items-center gap-2">
+            <Badge variant={status.variant}>
+              {payment.status === "PAID" && (
+                <CheckCircle2 className="mr-1 size-3.5" />
+              )}
 
-            {status.label}
-          </Badge>
+              {status.label}
+            </Badge>
+            {payment.status === "PAID" && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setReviewOpen(true)}
+              >
+                Give Review
+              </Button>
+            )}
+          </div>
         </div>
       </CardHeader>
 
@@ -201,6 +215,11 @@ function PaymentCard({ payment }: { payment: IPayment }) {
           </div>
         )}
       </CardContent>
+      <ReviewModal
+        open={reviewOpen}
+        onOpenChange={setReviewOpen}
+        serviceRequestId={payment.serviceRequestId}
+      />
     </Card>
   );
 }
