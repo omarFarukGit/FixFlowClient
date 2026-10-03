@@ -10,8 +10,12 @@ import {
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetServiceRequests } from "@/hooks/service.hook";
+import {
+  useCreateServiceRequestPayment,
+  useGetServiceRequests,
+} from "@/hooks/service.hook";
 import { IServiceRequest, statusConfig } from "@/types/service.type";
 import MyServicesSkeleton from "./customer-service-skeleton";
 
@@ -103,6 +107,8 @@ export default function MyServices() {
 }
 
 function ServiceCard({ service }: { service: IServiceRequest }) {
+  const { mutate: createPayment, isPending } = useCreateServiceRequestPayment();
+
   const status = statusConfig[service.status] ?? {
     label: service.status,
     variant: "secondary" as const,
@@ -117,7 +123,21 @@ function ServiceCard({ service }: { service: IServiceRequest }) {
 
   const serviceUrl = `/customer/service-requests/${service.id}`;
 
-  const paymentUrl = `/customer/payments/${service.id}`;
+  const handlePayment = () => {
+    createPayment(service.id, {
+      onSuccess: (response) => {
+        const paymentData = response.data;
+
+        if (paymentData.checkoutUrl) {
+          window.location.href = paymentData.checkoutUrl;
+        }
+      },
+
+      onError: (error) => {
+        console.error("Payment creation failed:", error);
+      },
+    });
+  };
 
   return (
     <div className="group rounded-lg border transition-colors hover:bg-muted/50">
@@ -154,7 +174,6 @@ function ServiceCard({ service }: { service: IServiceRequest }) {
               {scheduledDate && (
                 <span className="flex items-center gap-1">
                   <CalendarDays className="size-3.5" />
-
                   {scheduledDate.toLocaleDateString()}
                 </span>
               )}
@@ -195,20 +214,22 @@ function ServiceCard({ service }: { service: IServiceRequest }) {
             {isPaid ? (
               <Badge variant="default">Paid</Badge>
             ) : isCompleted ? (
-              <Link
-                href={paymentUrl}
+              <Button
+                type="button"
+                disabled={isPending}
+                onClick={handlePayment}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center rounded-md px-4 py-2 text-xs font-medium transition-colors"
               >
-                Pay Now
-              </Link>
+                {isPending ? "Processing..." : "Pay Now"}
+              </Button>
             ) : (
-              <button
+              <Button
                 type="button"
                 disabled
                 className="bg-muted text-muted-foreground inline-flex cursor-not-allowed items-center justify-center rounded-md px-4 py-2 text-xs font-medium opacity-70"
               >
-                Payment Pending
-              </button>
+                Pay Now
+              </Button>
             )}
           </div>
         </div>

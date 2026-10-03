@@ -1,5 +1,6 @@
 import {
   createServiceRequest,
+  createServiceRequestPayment,
   getCategories,
   getServiceRequests,
 } from "@/api/service.api";
@@ -22,5 +23,11 @@ export function useGetServiceRequests() {
 export function useCreateServiceRequest() {
   return useMutation({
     mutationFn: createServiceRequest,
+  });
+}
+
+export function useCreateServiceRequestPayment() {
+  return useMutation({
+    mutationFn: createServiceRequestPayment,
   });
 }

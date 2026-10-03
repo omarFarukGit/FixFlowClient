@@ -17,3 +17,10 @@ export const createServiceRequest = async (
 export const getServiceRequests = async () => {
   return apiClient("/service-requests");
 };
+
+export const createServiceRequestPayment = async (serviceRequestId: string) => {
+  return apiClient(`/payments/create-checkout-session`, {
+    method: "POST",
+    body: { serviceRequestId },
+  });
+};
