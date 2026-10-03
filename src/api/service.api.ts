@@ -13,3 +13,7 @@ export const createServiceRequest = async (
     body: payload,
   });
 };
+
+export const getServiceRequests = async () => {
+  return apiClient("/service-requests");
+};
