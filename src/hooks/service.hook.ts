@@ -2,6 +2,7 @@ import {
   createServiceRequest,
   createServiceRequestPayment,
   getCategories,
+  getPayments,
   getServiceRequests,
 } from "@/api/service.api";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -29,5 +30,12 @@ export function useCreateServiceRequest() {
 export function useCreateServiceRequestPayment() {
   return useMutation({
     mutationFn: createServiceRequestPayment,
+  });
+}
+
+export function useGetPayments() {
+  return useQuery({
+    queryKey: ["payments"],
+    queryFn: getPayments,
   });
 }

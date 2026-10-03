@@ -24,3 +24,7 @@ export const createServiceRequestPayment = async (serviceRequestId: string) => {
     body: { serviceRequestId },
   });
 };
+
+export const getPayments = async () => {
+  return apiClient("/payments/my-payments");
+};
