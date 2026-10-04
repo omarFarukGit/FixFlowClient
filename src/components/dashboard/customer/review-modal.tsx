@@ -82,6 +82,7 @@ export default function ReviewModal({
             description: message,
             type: "error",
           });
+          onOpenChange(false);
         },
       });
     },
