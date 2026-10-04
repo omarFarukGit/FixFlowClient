@@ -5,8 +5,10 @@ export function getAllServicesRequest() {
 }
 
 export function getAllThecnicians() {
-  return apiClient("/technicians", { method: "GET" });
+  return apiClient("/users/technicians", { method: "GET" });
 }
+
+//http://localhost:5000/api/v1/users/technicians
 
 export function assignTechnicianToServiceRequest(
   serviceRequestId: string,
@@ -14,6 +16,6 @@ export function assignTechnicianToServiceRequest(
 ) {
   return apiClient(`/service-requests/${serviceRequestId}/assign`, {
     method: "PATCH",
-    body: technicianId,
+    body: { technicianId },
   });
 }

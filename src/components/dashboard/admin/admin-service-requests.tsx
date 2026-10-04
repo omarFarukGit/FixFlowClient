@@ -22,8 +22,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useGetAllServicesRequests } from "@/hooks";
-import AdminServiceRequestsSkeleton from "./admin-service-skeleton";
 import { IServiceRequest, ServiceStatus, statusConfig } from "@/types";
+
+import AdminServiceRequestsSkeleton from "./admin-service-skeleton";
+import TechnicianAssignModal from "./technician-assign-modal";
 
 const filters = [
   { label: "All Requests", value: "ALL" },
@@ -49,7 +51,16 @@ export default function AdminServiceRequests() {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [page, setPage] = useState(1);
 
-  // Supports both a direct array and a paginated API response.
+  // Technician assign modal
+  const [assignModalOpen, setAssignModalOpen] = useState(false);
+  const [selectedServiceRequestId, setSelectedServiceRequestId] = useState<
+    string | null
+  >(null);
+  const [selectedTechnicianId, setSelectedTechnicianId] = useState<
+    string | null
+  >(null);
+
+  // Supports both direct array and paginated API response
   const requests: IServiceRequest[] = Array.isArray(response?.data)
     ? response.data
     : Array.isArray(response?.data?.data)
@@ -65,21 +76,23 @@ export default function AdminServiceRequests() {
 
       const customerName = request.customer?.name ?? request.user?.name ?? "";
 
+      const searchableValues = [
+        request.title,
+        request.id,
+        request.description,
+        request.category?.name,
+        customerName,
+        request.customer?.email,
+        request.user?.email,
+        request.technician?.user?.name,
+        request.address,
+        request.city,
+        request.area,
+      ];
+
       const matchesSearch =
         !query ||
-        [
-          request.title,
-          request.id,
-          request.description,
-          request.category?.name,
-          customerName,
-          request.customer?.email,
-          request.user?.email,
-          request.technician?.user?.name,
-          request.address,
-          request.city,
-          request.area,
-        ].some((value) => value?.toLowerCase().includes(query));
+        searchableValues.some((value) => value?.toLowerCase().includes(query));
 
       return matchesStatus && matchesSearch;
     });
@@ -97,7 +110,28 @@ export default function AdminServiceRequests() {
     currentPage * PAGE_SIZE,
   );
 
-  const resetPage = () => setPage(1);
+  const resetPage = () => {
+    setPage(1);
+  };
+
+  const openAssignModal = (request: IServiceRequest) => {
+    setSelectedServiceRequestId(request.id);
+
+    // If technician already assigned, keep current technician ID
+    // Otherwise null; admin will select one from modal.
+    setSelectedTechnicianId(request.technician?.id ?? null);
+
+    setAssignModalOpen(true);
+  };
+
+  const closeAssignModal = (open: boolean) => {
+    setAssignModalOpen(open);
+
+    if (!open) {
+      setSelectedServiceRequestId(null);
+      setSelectedTechnicianId(null);
+    }
+  };
 
   if (isLoading) {
     return <AdminServiceRequestsSkeleton />;
@@ -107,9 +141,10 @@ export default function AdminServiceRequests() {
     return (
       <Card>
         <CardContent className="flex min-h-64 flex-col items-center justify-center gap-4 text-center">
-          <p className="text-destructive font-medium">
+          <p className="font-medium text-destructive">
             Failed to load service requests.
           </p>
+
           <Button variant="outline" onClick={() => refetch()}>
             Try Again
           </Button>
@@ -126,7 +161,8 @@ export default function AdminServiceRequests() {
           <h1 className="text-2xl font-bold tracking-tight">
             Service Requests
           </h1>
-          <p className="text-muted-foreground mt-1 text-sm">
+
+          <p className="mt-1 text-sm text-muted-foreground">
             Monitor customer requests and track service progress.
           </p>
         </div>
@@ -139,16 +175,19 @@ export default function AdminServiceRequests() {
       {/* Summary */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <SummaryCard title="Total Requests" value={requests.length} />
+
         <SummaryCard
           title="Pending"
           value={requests.filter((item) => item.status === "PENDING").length}
         />
+
         <SummaryCard
           title="In Progress"
           value={
             requests.filter((item) => item.status === "IN_PROGRESS").length
           }
         />
+
         <SummaryCard
           title="Completed"
           value={requests.filter((item) => item.status === "COMPLETED").length}
@@ -159,6 +198,7 @@ export default function AdminServiceRequests() {
       <Card>
         <CardHeader>
           <CardTitle>All Service Requests</CardTitle>
+
           <CardDescription>
             Search requests or filter by their current status.
           </CardDescription>
@@ -166,8 +206,10 @@ export default function AdminServiceRequests() {
 
         <CardContent className="space-y-5">
           <div className="flex flex-col gap-3 md:flex-row">
+            {/* Search */}
             <div className="relative flex-1">
-              <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+              <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+
               <Input
                 placeholder="Search title, customer, category, location..."
                 value={search}
@@ -179,6 +221,7 @@ export default function AdminServiceRequests() {
               />
             </div>
 
+            {/* Status filter */}
             <select
               aria-label="Filter by service request status"
               value={statusFilter}
@@ -186,7 +229,7 @@ export default function AdminServiceRequests() {
                 setStatusFilter(event.target.value);
                 resetPage();
               }}
-              className="border-input bg-background h-10 rounded-md border px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-48"
+              className="h-10 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring md:w-48"
             >
               {filters.map((filter) => (
                 <option key={filter.value} value={filter.value}>
@@ -199,13 +242,16 @@ export default function AdminServiceRequests() {
           {/* Empty state */}
           {filteredRequests.length === 0 ? (
             <div className="flex min-h-56 flex-col items-center justify-center text-center">
-              <div className="bg-muted mb-3 flex size-12 items-center justify-center rounded-full">
-                <Wrench className="text-muted-foreground size-6" />
+              <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-muted">
+                <Wrench className="size-6 text-muted-foreground" />
               </div>
+
               <h3 className="font-semibold">No service requests found</h3>
-              <p className="text-muted-foreground mt-1 text-sm">
+
+              <p className="mt-1 text-sm text-muted-foreground">
                 Try changing your search or status filter.
               </p>
+
               {(search || statusFilter !== "ALL") && (
                 <Button
                   variant="link"
@@ -243,15 +289,19 @@ export default function AdminServiceRequests() {
                         key={request.id}
                         className="border-b last:border-0 hover:bg-muted/30"
                       >
+                        {/* Service */}
                         <td className="max-w-64 px-4 py-4">
                           <p className="truncate font-medium">
                             {request.title}
                           </p>
-                          <p className="text-muted-foreground mt-1 text-xs">
+
+                          <p className="mt-1 text-xs text-muted-foreground">
                             {request.category?.name ?? "Uncategorized"}
                           </p>
-                          <p className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
+
+                          <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
                             <MapPin className="size-3 shrink-0" />
+
                             <span className="truncate">
                               {request.area
                                 ? `${request.area}, ${request.city ?? ""}`
@@ -260,37 +310,65 @@ export default function AdminServiceRequests() {
                           </p>
                         </td>
 
+                        {/* Customer */}
                         <td className="px-4 py-4">
                           <p className="font-medium">
                             {request.customer?.name ??
                               request.user?.name ??
                               "—"}
                           </p>
-                          <p className="text-muted-foreground mt-1 text-xs">
+
+                          <p className="mt-1 text-xs text-muted-foreground">
                             {request.customer?.email ??
                               request.user?.email ??
                               ""}
                           </p>
                         </td>
 
+                        {/* Technician */}
                         <td className="px-4 py-4">
-                          {request.technician?.user?.name ?? (
-                            <span className="text-muted-foreground">
-                              Not assigned
-                            </span>
+                          {request.technician?.user?.name ? (
+                            <div className="space-y-2">
+                              <p className="font-medium">
+                                {request.technician.user.name}
+                              </p>
+
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openAssignModal(request)}
+                              >
+                                <Wrench className="size-4" />
+                                Reassign
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button
+                              size="sm"
+                              onClick={() => openAssignModal(request)}
+                              disabled={request.status !== "PENDING"}
+                            >
+                              <Wrench className="size-4" />
+                              {request.status === "PENDING"
+                                ? "Assign"
+                                : "Assigned"}
+                            </Button>
                           )}
                         </td>
 
+                        {/* Status */}
                         <td className="px-4 py-4">
                           <RequestStatus status={request.status} />
                         </td>
 
-                        <td className="px-4 py-4 whitespace-nowrap">
+                        {/* Price */}
+                        <td className="whitespace-nowrap px-4 py-4">
                           {formatPrice(
                             request.finalPrice ?? request.estimatedPrice,
                           )}
                         </td>
 
+                        {/* Action */}
                         <td className="px-4 py-4 text-right">
                           <Button variant="outline" size="sm">
                             <Link
@@ -313,12 +391,14 @@ export default function AdminServiceRequests() {
                     key={request.id}
                     className="space-y-3 rounded-lg border p-4"
                   >
+                    {/* Title */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
                         <h3 className="truncate font-semibold">
                           {request.title}
                         </h3>
-                        <p className="text-muted-foreground mt-1 text-sm">
+
+                        <p className="mt-1 text-sm text-muted-foreground">
                           {request.category?.name ?? "Uncategorized"}
                         </p>
                       </div>
@@ -326,7 +406,8 @@ export default function AdminServiceRequests() {
                       <RequestStatus status={request.status} />
                     </div>
 
-                    <div className="text-muted-foreground space-y-2 text-sm">
+                    {/* Details */}
+                    <div className="space-y-2 text-sm text-muted-foreground">
                       <p>
                         Customer:{" "}
                         <span className="text-foreground">
@@ -343,6 +424,7 @@ export default function AdminServiceRequests() {
 
                       <p className="flex items-start gap-2">
                         <MapPin className="mt-0.5 size-4 shrink-0" />
+
                         <span>
                           {request.area
                             ? `${request.area}, ${request.city ?? ""}`
@@ -353,24 +435,40 @@ export default function AdminServiceRequests() {
                       {request.scheduledAt && (
                         <p className="flex items-center gap-2">
                           <CalendarDays className="size-4 shrink-0" />
+
                           {new Date(request.scheduledAt).toLocaleString()}
                         </p>
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between border-t pt-3">
+                    {/* Price + actions */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-3">
                       <span className="font-semibold">
                         {formatPrice(
                           request.finalPrice ?? request.estimatedPrice,
                         )}
                       </span>
 
-                      <Button variant="outline" size="sm">
-                        <Link href={`/admin/service-requests/${request.id}`}>
-                          View Details
-                          <ChevronRight className="ml-1 size-4" />
-                        </Link>
-                      </Button>
+                      <div className="flex gap-2">
+                        {/* Assign / Reassign */}
+                        <Button
+                          size="sm"
+                          variant={request.technician ? "outline" : "default"}
+                          onClick={() => openAssignModal(request)}
+                        >
+                          <Wrench className="size-4" />
+
+                          {request.technician ? "Reassign" : "Assign"}
+                        </Button>
+
+                        {/* View */}
+                        <Button variant="outline" size="sm">
+                          <Link href={`/admin/service-requests/${request.id}`}>
+                            View
+                            <ChevronRight className="ml-1 size-4" />
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -378,7 +476,7 @@ export default function AdminServiceRequests() {
 
               {/* Pagination */}
               <div className="flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                   Showing {(currentPage - 1) * PAGE_SIZE + 1}–
                   {Math.min(currentPage * PAGE_SIZE, filteredRequests.length)}{" "}
                   of {filteredRequests.length} requests
@@ -395,7 +493,7 @@ export default function AdminServiceRequests() {
                     Previous
                   </Button>
 
-                  <span className="text-muted-foreground text-sm">
+                  <span className="text-sm text-muted-foreground">
                     {currentPage} / {totalPages}
                   </span>
 
@@ -414,6 +512,19 @@ export default function AdminServiceRequests() {
           )}
         </CardContent>
       </Card>
+
+      {/* Technician Assign Modal */}
+      {selectedServiceRequestId && (
+        <TechnicianAssignModal
+          open={assignModalOpen}
+          onOpenChange={closeAssignModal}
+          serviceRequestId={selectedServiceRequestId}
+          currentTechnicianId={selectedTechnicianId}
+          onSuccess={() => {
+            refetch();
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -422,7 +533,8 @@ function SummaryCard({ title, value }: { title: string; value: number }) {
   return (
     <Card>
       <CardContent className="p-4 sm:p-5">
-        <p className="text-muted-foreground text-xs sm:text-sm">{title}</p>
+        <p className="text-xs text-muted-foreground sm:text-sm">{title}</p>
+
         <p className="mt-2 text-2xl font-bold">{value}</p>
       </CardContent>
     </Card>
