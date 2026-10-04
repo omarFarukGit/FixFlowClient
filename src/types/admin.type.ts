@@ -42,3 +42,13 @@ export interface IServiceRequest {
     };
   };
 }
+
+export type Customer = {
+  id: string | number;
+  name: string;
+  email: string;
+  phone?: string | null;
+  status: string;
+  createdAt: string;
+  imageUrl?: string | null;
+};

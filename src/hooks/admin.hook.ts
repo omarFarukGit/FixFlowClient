@@ -1,5 +1,6 @@
 import {
   assignTechnicianToServiceRequest,
+  getAllCustomers,
   getAllServicesRequest,
   getAllThecnicians,
 } from "@/api";
@@ -16,6 +17,12 @@ export function useGetTechnicians() {
   return useQuery({
     queryKey: ["technicians"],
     queryFn: getAllThecnicians,
+  });
+}
+export function useGetCustomers() {
+  return useQuery({
+    queryKey: ["customers"],
+    queryFn: getAllCustomers,
   });
 }
 

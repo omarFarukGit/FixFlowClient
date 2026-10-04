@@ -7,6 +7,9 @@ export function getAllServicesRequest() {
 export function getAllThecnicians() {
   return apiClient("/users/technicians", { method: "GET" });
 }
+export function getAllCustomers() {
+  return apiClient("/users/customers", { method: "GET" });
+}
 
 //http://localhost:5000/api/v1/users/technicians
 
