@@ -119,3 +119,34 @@ export const statusConfig2: Record<
     variant: "destructive",
   },
 };
+
+export type CompletedService = {
+  id: string;
+  title: string;
+  description?: string | null;
+  status: "COMPLETED";
+  scheduledAt?: string | null;
+  finalPrice?: string | number | null;
+  estimatedPrice?: string | number | null;
+  address: string;
+  area?: string | null;
+  city?: string | null;
+
+  category?: {
+    id?: string;
+    name?: string | null;
+  } | null;
+
+  customer?: {
+    id?: string;
+    name?: string | null;
+    email?: string | null;
+    phone?: string | null;
+    imageUrl?: string | null;
+  } | null;
+
+  technician?: {
+    id?: string;
+    name?: string | null;
+  } | null;
+};
