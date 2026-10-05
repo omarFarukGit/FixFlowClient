@@ -13,104 +13,19 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetServiceRequestById } from "@/hooks";
 
 import ServiceStatusActions from "./service-status-actions";
-
-type ServiceStatus =
-  | "PENDING"
-  | "ASSIGNED"
-  | "ACCEPTED"
-  | "IN_PROGRESS"
-  | "COMPLETED"
-  | "CANCELLED";
-
-interface TechnicianServiceDetailsProps {
-  serviceRequestId: string;
-}
-
-const statusConfig: Record<
-  ServiceStatus,
-  {
-    label: string;
-    variant:
-      | "default"
-      | "secondary"
-      | "destructive";
-  }
-> = {
-  PENDING: {
-    label: "Pending",
-    variant: "secondary",
-  },
-
-  ASSIGNED: {
-    label: "Assigned",
-    variant: "default",
-  },
-
-  ACCEPTED: {
-    label: "Accepted",
-    variant: "secondary",
-  },
-
-  IN_PROGRESS: {
-    label: "In Progress",
-    variant: "secondary",
-  },
-
-  COMPLETED: {
-    label: "Completed",
-    variant: "default",
-  },
-
-  CANCELLED: {
-    label: "Cancelled",
-    variant: "destructive",
-  },
-};
-
-const formatPrice = (
-  price?: string | number | null,
-) => {
-  if (
-    price === null ||
-    price === undefined
-  ) {
-    return "N/A";
-  }
-
-  return `৳${Number(price).toLocaleString(
-    "en-BD",
-  )}`;
-};
-
-const formatDateTime = (
-  date?: string | null,
-) => {
-  if (!date) {
-    return "Not scheduled";
-  }
-
-  return new Date(date).toLocaleString(
-    "en-BD",
-    {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    },
-  );
-};
+import {
+  formatDateTime,
+  formatPrice,
+  statusConfig2,
+  TechnicianServiceDetailsProps,
+} from "@/types/technician.type";
+import { ServiceStatus } from "@/types";
 
 export default function TechnicianServiceDetails({
   serviceRequestId,
@@ -120,9 +35,7 @@ export default function TechnicianServiceDetails({
     isLoading,
     isError,
     refetch,
-  } = useGetServiceRequestById(
-    serviceRequestId,
-  );
+  } = useGetServiceRequestById(serviceRequestId);
 
   const service = response?.data;
 
@@ -170,20 +83,14 @@ export default function TechnicianServiceDetails({
           <div className="text-center">
             <Wrench className="mx-auto mb-3 size-10 text-muted-foreground" />
 
-            <h3 className="font-semibold">
-              Failed to load service
-            </h3>
+            <h3 className="font-semibold">Failed to load service</h3>
 
             <p className="mt-1 text-sm text-muted-foreground">
               This service request could not be found.
             </p>
 
-            <Button
-              className="mt-4 flex gap-2"
-            >
-              <Link href="/technician/services">
-                Back to Services
-              </Link>
+            <Button className="mt-4 flex gap-2">
+              <Link href="/technician/services">Back to Services</Link>
             </Button>
           </div>
         </CardContent>
@@ -192,18 +99,16 @@ export default function TechnicianServiceDetails({
   }
 
   const currentStatus =
-    statusConfig[
-      service.status as ServiceStatus
-    ] ?? statusConfig.PENDING;
+    statusConfig2[service.status as ServiceStatus] ?? statusConfig2.PENDING;
 
   return (
     <div className="space-y-6">
       {/* Back */}
-      <Button
-        variant="ghost"
-        className="-ml-2 "
-      >
-        <Link href="/technician/services" className="flex gap-2 justify-center items-center">
+      <Button variant="ghost" className="-ml-2 ">
+        <Link
+          href="/technician/services"
+          className="flex gap-2 justify-center items-center"
+        >
           <ArrowLeft />
           Back to Services
         </Link>
@@ -217,11 +122,7 @@ export default function TechnicianServiceDetails({
               {service.title}
             </h1>
 
-            <Badge
-              variant={currentStatus.variant}
-            >
-              {currentStatus.label}
-            </Badge>
+            <Badge variant={currentStatus.variant}>{currentStatus.label}</Badge>
           </div>
 
           <p className="mt-1 break-all text-sm text-muted-foreground">
@@ -250,13 +151,10 @@ export default function TechnicianServiceDetails({
 
             <CardContent className="space-y-5">
               <div>
-                <p className="text-sm text-muted-foreground">
-                  Category
-                </p>
+                <p className="text-sm text-muted-foreground">Category</p>
 
                 <p className="mt-1 font-medium">
-                  {service.category?.name ??
-                    "Service"}
+                  {service.category?.name ?? "Service"}
                 </p>
               </div>
 
@@ -265,9 +163,7 @@ export default function TechnicianServiceDetails({
                   <Separator />
 
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      Description
-                    </p>
+                    <p className="text-sm text-muted-foreground">Description</p>
 
                     <p className="mt-1 whitespace-pre-wrap leading-6">
                       {service.description}
@@ -288,9 +184,7 @@ export default function TechnicianServiceDetails({
                     </p>
 
                     <p className="mt-1 font-medium">
-                      {formatDateTime(
-                        service.scheduledAt,
-                      )}
+                      {formatDateTime(service.scheduledAt)}
                     </p>
                   </div>
                 </div>
@@ -299,14 +193,10 @@ export default function TechnicianServiceDetails({
                   <Clock className="mt-0.5 size-5 text-muted-foreground" />
 
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      Created At
-                    </p>
+                    <p className="text-sm text-muted-foreground">Created At</p>
 
                     <p className="mt-1 font-medium">
-                      {formatDateTime(
-                        service.createdAt,
-                      )}
+                      {formatDateTime(service.createdAt)}
                     </p>
                   </div>
                 </div>
@@ -324,19 +214,11 @@ export default function TechnicianServiceDetails({
             </CardHeader>
 
             <CardContent>
-              <p className="font-medium">
-                {service.address}
-              </p>
+              <p className="font-medium">{service.address}</p>
 
-              {(service.area ||
-                service.city) && (
+              {(service.area || service.city) && (
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {[
-                    service.area,
-                    service.city,
-                  ]
-                    .filter(Boolean)
-                    .join(", ")}
+                  {[service.area, service.city].filter(Boolean).join(", ")}
                 </p>
               )}
             </CardContent>
@@ -356,8 +238,7 @@ export default function TechnicianServiceDetails({
 
             <CardContent className="space-y-2">
               <p className="font-medium">
-                {service.customer?.name ??
-                  "Customer"}
+                {service.customer?.name ?? "Customer"}
               </p>
 
               {service.customer?.email && (
@@ -377,47 +258,37 @@ export default function TechnicianServiceDetails({
           {/* Price */}
           <Card>
             <CardHeader>
-              <CardTitle>
-                Service Price
-              </CardTitle>
+              <CardTitle>Service Price</CardTitle>
             </CardHeader>
 
             <CardContent>
               <p className="text-3xl font-bold">
-                {formatPrice(
-                  service.finalPrice ??
-                    service.estimatedPrice,
-                )}
+                {formatPrice(service.finalPrice ?? service.estimatedPrice)}
               </p>
 
               {service.finalPrice !== null &&
-                service.finalPrice !==
-                  undefined && (
+                service.finalPrice !== undefined && (
                   <p className="mt-1 text-xs text-muted-foreground">
                     Final Price
                   </p>
                 )}
 
-              {!service.finalPrice &&
-                service.estimatedPrice && (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Estimated Price
-                  </p>
-                )}
+              {!service.finalPrice && service.estimatedPrice && (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Estimated Price
+                </p>
+              )}
             </CardContent>
           </Card>
 
           {/* Completed */}
-          {service.status ===
-            "COMPLETED" && (
+          {service.status === "COMPLETED" && (
             <Card>
               <CardContent className="flex items-center gap-3 p-5">
                 <CheckCircle2 className="size-6 shrink-0 text-green-600" />
 
                 <div>
-                  <p className="font-semibold">
-                    Service Completed
-                  </p>
+                  <p className="font-semibold">Service Completed</p>
 
                   <p className="text-sm text-muted-foreground">
                     This service has been completed.

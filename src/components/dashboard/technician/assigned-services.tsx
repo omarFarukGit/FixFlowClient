@@ -25,93 +25,25 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetMyServiceRequests } from "@/hooks";
-
-const statusConfig = {
-  ASSIGNED: {
-    label: "Assigned",
-    variant: "default" as const,
-  },
-  ACCEPTED: {
-    label: "Accepted",
-    variant: "secondary" as const,
-  },
-  IN_PROGRESS: {
-    label: "In Progress",
-    variant: "secondary" as const,
-  },
-};
-
-type AssignedService = {
-  id: string;
-  title: string;
-  status: keyof typeof statusConfig;
-  scheduledAt?: string | null;
-  finalPrice?: string | number | null;
-  estimatedPrice?: string | number | null;
-  address: string;
-  area?: string | null;
-  city?: string | null;
-  category?: {
-    name?: string | null;
-  } | null;
-  customer?: {
-    name?: string | null;
-    email?: string | null;
-  } | null;
-};
-
-type StatusFilter = "ALL" | keyof typeof statusConfig;
-
-const PAGE_SIZE = 10;
-
-const formatPrice = (price?: string | number | null) => {
-  if (price === null || price === undefined) {
-    return "N/A";
-  }
-
-  return `৳${Number(price).toLocaleString("en-BD")}`;
-};
-
-const formatDate = (date?: string | null) => {
-  if (!date) {
-    return "Not scheduled";
-  }
-
-  return new Date(date).toLocaleDateString("en-BD", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-};
-
-const formatDateTime = (date?: string | null) => {
-  if (!date) {
-    return "Not scheduled";
-  }
-
-  return new Date(date).toLocaleString("en-BD", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
+import AssignedServicesSkeleton from "./assigned-technician.skeleton";
+import {
+  AssignedService,
+  formatDate,
+  formatDateTime,
+  formatPrice,
+  PAGE_SIZE,
+  statusConfig,
+  StatusFilter,
+} from "@/types/technician.type";
 
 export default function AssignedServices() {
-  const {
-    data: response,
-    isLoading,
-    isError,
-  } = useGetMyServiceRequests();
+  const { data: response, isLoading, isError } = useGetMyServiceRequests();
 
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] =
-    useState<StatusFilter>("ALL");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const allServices: AssignedService[] =
-    response?.data?.data ?? [];
+  const allServices: AssignedService[] = response?.data?.data ?? [];
 
   const activeServices = useMemo(() => {
     return allServices.filter(
@@ -130,8 +62,7 @@ export default function AssignedServices() {
 
     return activeServices.filter((service) => {
       const matchesStatus =
-        statusFilter === "ALL" ||
-        service.status === statusFilter;
+        statusFilter === "ALL" || service.status === statusFilter;
 
       if (!matchesStatus) {
         return false;
@@ -163,32 +94,20 @@ export default function AssignedServices() {
    * Pagination
    */
   const totalItems = filteredServices.length;
-  const totalPages = Math.max(
-    1,
-    Math.ceil(totalItems / PAGE_SIZE),
-  );
+  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
 
   const safeCurrentPage = Math.min(currentPage, totalPages);
 
   const paginatedServices = useMemo(() => {
-    const startIndex =
-      (safeCurrentPage - 1) * PAGE_SIZE;
+    const startIndex = (safeCurrentPage - 1) * PAGE_SIZE;
 
-    return filteredServices.slice(
-      startIndex,
-      startIndex + PAGE_SIZE,
-    );
+    return filteredServices.slice(startIndex, startIndex + PAGE_SIZE);
   }, [filteredServices, safeCurrentPage]);
 
   const startItem =
-    totalItems === 0
-      ? 0
-      : (safeCurrentPage - 1) * PAGE_SIZE + 1;
+    totalItems === 0 ? 0 : (safeCurrentPage - 1) * PAGE_SIZE + 1;
 
-  const endItem = Math.min(
-    safeCurrentPage * PAGE_SIZE,
-    totalItems,
-  );
+  const endItem = Math.min(safeCurrentPage * PAGE_SIZE, totalItems);
 
   /**
    * Reset page when search/filter changes
@@ -208,15 +127,11 @@ export default function AssignedServices() {
   };
 
   const goToNextPage = () => {
-    setCurrentPage((page) =>
-      Math.min(totalPages, page + 1),
-    );
+    setCurrentPage((page) => Math.min(totalPages, page + 1));
   };
 
   const goToPage = (page: number) => {
-    setCurrentPage(
-      Math.min(Math.max(page, 1), totalPages),
-    );
+    setCurrentPage(Math.min(Math.max(page, 1), totalPages));
   };
 
   /**
@@ -234,56 +149,8 @@ export default function AssignedServices() {
     (service) => service.status === "IN_PROGRESS",
   ).length;
 
-  const summarySkeletons = [
-    "assigned-count",
-    "accepted-count",
-    "in-progress-count",
-  ];
-
-  const serviceSkeletons = [
-    "service-row-1",
-    "service-row-2",
-    "service-row-3",
-    "service-row-4",
-    "service-row-5",
-  ];
-
   if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div>
-          <Skeleton className="h-8 w-52" />
-          <Skeleton className="mt-2 h-4 w-80" />
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {summarySkeletons.map((skeletonId) => (
-            <Card key={skeletonId}>
-              <CardContent className="p-5">
-                <Skeleton className="h-6 w-32" />
-                <Skeleton className="mt-2 h-8 w-16" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <Card>
-          <CardContent className="space-y-4 p-5">
-            <div className="grid gap-4 md:grid-cols-2">
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-
-            {serviceSkeletons.map((skeletonId) => (
-              <Skeleton
-                key={skeletonId}
-                className="h-12 w-full"
-              />
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <AssignedServicesSkeleton />;
   }
 
   if (isError) {
@@ -293,9 +160,7 @@ export default function AssignedServices() {
           <div className="text-center">
             <Wrench className="mx-auto mb-3 size-10 text-muted-foreground" />
 
-            <h3 className="font-semibold">
-              Failed to load assigned services
-            </h3>
+            <h3 className="font-semibold">Failed to load assigned services</h3>
 
             <p className="mt-1 text-sm text-muted-foreground">
               Please try again later.
@@ -310,13 +175,10 @@ export default function AssignedServices() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          Assigned Services
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight">Assigned Services</h1>
 
         <p className="text-sm text-muted-foreground">
-          View and manage service requests currently
-          assigned to you.
+          View and manage service requests currently assigned to you.
         </p>
       </div>
 
@@ -329,13 +191,9 @@ export default function AssignedServices() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                Assigned
-              </p>
+              <p className="text-sm text-muted-foreground">Assigned</p>
 
-              <p className="text-2xl font-bold">
-                {assignedCount}
-              </p>
+              <p className="text-2xl font-bold">{assignedCount}</p>
             </div>
           </CardContent>
         </Card>
@@ -347,13 +205,9 @@ export default function AssignedServices() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                Accepted
-              </p>
+              <p className="text-sm text-muted-foreground">Accepted</p>
 
-              <p className="text-2xl font-bold">
-                {acceptedCount}
-              </p>
+              <p className="text-2xl font-bold">{acceptedCount}</p>
             </div>
           </CardContent>
         </Card>
@@ -365,13 +219,9 @@ export default function AssignedServices() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                In Progress
-              </p>
+              <p className="text-sm text-muted-foreground">In Progress</p>
 
-              <p className="text-2xl font-bold">
-                {inProgressCount}
-              </p>
+              <p className="text-2xl font-bold">{inProgressCount}</p>
             </div>
           </CardContent>
         </Card>
@@ -387,9 +237,7 @@ export default function AssignedServices() {
 
               <Input
                 value={search}
-                onChange={(event) =>
-                  handleSearchChange(event.target.value)
-                }
+                onChange={(event) => handleSearchChange(event.target.value)}
                 placeholder="Search service, customer, category..."
                 className="pl-9"
               />
@@ -399,9 +247,7 @@ export default function AssignedServices() {
             <Select
               value={statusFilter}
               onValueChange={(value) =>
-                handleStatusChange(
-                  value as StatusFilter,
-                )
+                handleStatusChange(value as StatusFilter)
               }
             >
               <SelectTrigger className="w-full">
@@ -409,21 +255,13 @@ export default function AssignedServices() {
               </SelectTrigger>
 
               <SelectContent>
-                <SelectItem value="ALL">
-                  All Status
-                </SelectItem>
+                <SelectItem value="ALL">All Status</SelectItem>
 
-                <SelectItem value="ASSIGNED">
-                  Assigned
-                </SelectItem>
+                <SelectItem value="ASSIGNED">Assigned</SelectItem>
 
-                <SelectItem value="ACCEPTED">
-                  Accepted
-                </SelectItem>
+                <SelectItem value="ACCEPTED">Accepted</SelectItem>
 
-                <SelectItem value="IN_PROGRESS">
-                  In Progress
-                </SelectItem>
+                <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -473,9 +311,7 @@ export default function AssignedServices() {
               <table className="w-full text-sm">
                 <thead className="border-b bg-muted/40">
                   <tr>
-                    <th className="px-4 py-3 text-left font-medium">
-                      Service
-                    </th>
+                    <th className="px-4 py-3 text-left font-medium">Service</th>
 
                     <th className="px-4 py-3 text-left font-medium">
                       Customer
@@ -485,30 +321,20 @@ export default function AssignedServices() {
                       Scheduled
                     </th>
 
-                    <th className="px-4 py-3 text-left font-medium">
-                      Price
-                    </th>
+                    <th className="px-4 py-3 text-left font-medium">Price</th>
 
-                    <th className="px-4 py-3 text-left font-medium">
-                      Status
-                    </th>
+                    <th className="px-4 py-3 text-left font-medium">Status</th>
 
-                    <th className="px-4 py-3 text-right font-medium">
-                      Action
-                    </th>
+                    <th className="px-4 py-3 text-right font-medium">Action</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {paginatedServices.map((service) => {
-                    const status =
-                      statusConfig[service.status];
+                    const status = statusConfig[service.status];
 
                     return (
-                      <tr
-                        key={service.id}
-                        className="border-b last:border-0"
-                      >
+                      <tr key={service.id} className="border-b last:border-0">
                         {/* Service */}
                         <td className="px-4 py-4">
                           <div className="max-w-56">
@@ -517,8 +343,7 @@ export default function AssignedServices() {
                             </p>
 
                             <p className="mt-1 truncate text-xs text-muted-foreground">
-                              {service.category?.name ??
-                                "Service"}
+                              {service.category?.name ?? "Service"}
                             </p>
                           </div>
                         </td>
@@ -527,8 +352,7 @@ export default function AssignedServices() {
                         <td className="px-4 py-4">
                           <div>
                             <p className="font-medium">
-                              {service.customer?.name ??
-                                "Customer"}
+                              {service.customer?.name ?? "Customer"}
                             </p>
 
                             {service.customer?.email && (
@@ -544,39 +368,27 @@ export default function AssignedServices() {
                           <div className="flex items-center gap-2">
                             <CalendarDays className="size-4 text-muted-foreground" />
 
-                            <span>
-                              {formatDate(
-                                service.scheduledAt,
-                              )}
-                            </span>
+                            <span>{formatDate(service.scheduledAt)}</span>
                           </div>
                         </td>
 
                         {/* Price */}
                         <td className="px-4 py-4 font-medium">
                           {formatPrice(
-                            service.finalPrice ??
-                              service.estimatedPrice,
+                            service.finalPrice ?? service.estimatedPrice,
                           )}
                         </td>
 
                         {/* Status */}
                         <td className="px-4 py-4">
-                          <Badge
-                            variant={status.variant}
-                          >
-                            {status.label}
-                          </Badge>
+                          <Badge variant={status.variant}>{status.label}</Badge>
                         </td>
 
                         {/* Action */}
                         <td className="px-4 py-4 text-right">
-                          <Button
-                            
-                            size="sm"
-                            variant="outline"
-                          >
+                          <Button size="sm" variant="outline">
                             <Link
+                              className="flex items-center gap-2"
                               href={`/technician/services/${service.id}`}
                             >
                               View
@@ -595,8 +407,7 @@ export default function AssignedServices() {
           {/* Mobile Cards */}
           <div className="grid gap-4 md:hidden">
             {paginatedServices.map((service) => {
-              const status =
-                statusConfig[service.status];
+              const status = statusConfig[service.status];
 
               return (
                 <Card key={service.id}>
@@ -608,15 +419,11 @@ export default function AssignedServices() {
                         </CardTitle>
 
                         <p className="mt-1 text-xs text-muted-foreground">
-                          {service.category?.name ??
-                            "Service"}
+                          {service.category?.name ?? "Service"}
                         </p>
                       </div>
 
-                      <Badge
-                        variant={status.variant}
-                        className="shrink-0"
-                      >
+                      <Badge variant={status.variant} className="shrink-0">
                         {status.label}
                       </Badge>
                     </div>
@@ -625,13 +432,10 @@ export default function AssignedServices() {
                   <CardContent className="space-y-4">
                     {/* Customer */}
                     <div>
-                      <p className="text-xs text-muted-foreground">
-                        Customer
-                      </p>
+                      <p className="text-xs text-muted-foreground">Customer</p>
 
                       <p className="mt-1 text-sm font-medium">
-                        {service.customer?.name ??
-                          "Customer"}
+                        {service.customer?.name ?? "Customer"}
                       </p>
 
                       {service.customer?.email && (
@@ -650,17 +454,11 @@ export default function AssignedServices() {
                           Service Location
                         </p>
 
-                        <p className="mt-1 text-sm">
-                          {service.address}
-                        </p>
+                        <p className="mt-1 text-sm">{service.address}</p>
 
-                        {(service.area ||
-                          service.city) && (
+                        {(service.area || service.city) && (
                           <p className="text-xs text-muted-foreground">
-                            {[
-                              service.area,
-                              service.city,
-                            ]
+                            {[service.area, service.city]
                               .filter(Boolean)
                               .join(", ")}
                           </p>
@@ -678,9 +476,7 @@ export default function AssignedServices() {
                         </p>
 
                         <p className="text-sm">
-                          {formatDateTime(
-                            service.scheduledAt,
-                          )}
+                          {formatDateTime(service.scheduledAt)}
                         </p>
                       </div>
                     </div>
@@ -688,20 +484,18 @@ export default function AssignedServices() {
                     {/* Price + Action */}
                     <div className="flex items-center justify-between border-t pt-3">
                       <div>
-                        <p className="text-xs text-muted-foreground">
-                          Price
-                        </p>
+                        <p className="text-xs text-muted-foreground">Price</p>
 
                         <p className="mt-1 font-semibold">
                           {formatPrice(
-                            service.finalPrice ??
-                              service.estimatedPrice,
+                            service.finalPrice ?? service.estimatedPrice,
                           )}
                         </p>
                       </div>
 
-                      <Button  size="sm">
+                      <Button size="sm">
                         <Link
+                          className="flex items-center gap-2"
                           href={`/technician/services/${service.id}`}
                         >
                           View Details
@@ -720,13 +514,9 @@ export default function AssignedServices() {
             <div className="flex flex-col gap-4 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-muted-foreground">
                 Showing{" "}
-                <span className="font-medium text-foreground">
-                  {startItem}
-                </span>{" "}
+                <span className="font-medium text-foreground">{startItem}</span>{" "}
                 to{" "}
-                <span className="font-medium text-foreground">
-                  {endItem}
-                </span>{" "}
+                <span className="font-medium text-foreground">{endItem}</span>{" "}
                 of{" "}
                 <span className="font-medium text-foreground">
                   {totalItems}
@@ -743,9 +533,7 @@ export default function AssignedServices() {
                   disabled={safeCurrentPage === 1}
                 >
                   <ChevronLeft className="size-4" />
-                  <span className="hidden sm:inline">
-                    Previous
-                  </span>
+                  <span className="hidden sm:inline">Previous</span>
                 </Button>
 
                 {/* Page Numbers */}
@@ -754,22 +542,15 @@ export default function AssignedServices() {
                     { length: totalPages },
                     (_, index) => index + 1,
                   ).map((page) => {
-                    const isActive =
-                      page === safeCurrentPage;
+                    const isActive = page === safeCurrentPage;
 
                     return (
                       <Button
                         key={page}
-                        variant={
-                          isActive
-                            ? "default"
-                            : "outline"
-                        }
+                        variant={isActive ? "default" : "outline"}
                         size="sm"
                         className="size-9 p-0"
-                        onClick={() =>
-                          goToPage(page)
-                        }
+                        onClick={() => goToPage(page)}
                       >
                         {page}
                       </Button>
@@ -782,13 +563,9 @@ export default function AssignedServices() {
                   variant="outline"
                   size="sm"
                   onClick={goToNextPage}
-                  disabled={
-                    safeCurrentPage === totalPages
-                  }
+                  disabled={safeCurrentPage === totalPages}
                 >
-                  <span className="hidden sm:inline">
-                    Next
-                  </span>
+                  <span className="hidden sm:inline">Next</span>
                   <ChevronRight className="size-4" />
                 </Button>
               </div>
@@ -799,9 +576,3 @@ export default function AssignedServices() {
     </div>
   );
 }
-
-
-// services-requests/{id}/start
-// services-requests/{id}/complete
-// services-requests/{id}/accept
-

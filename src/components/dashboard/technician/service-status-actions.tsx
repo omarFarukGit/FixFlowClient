@@ -1,19 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import {
-  CheckCircle2,
-  Play,
-  ThumbsUp,
-} from "lucide-react";
+import { CheckCircle2, Play, ThumbsUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/components/ui/toast";
-import {
-  useAcceptServiceRequest,
-  useStartServiceRequest,
-} from "@/hooks";
+import { useAcceptServiceRequest, useStartServiceRequest } from "@/hooks";
 
 import CompleteServiceDialog from "./complete-service-dialog";
 
@@ -36,18 +29,13 @@ export default function ServiceStatusActions({
   status,
   onSuccess,
 }: ServiceStatusActionsProps) {
-  const [completeDialogOpen, setCompleteDialogOpen] =
-    useState(false);
+  const [completeDialogOpen, setCompleteDialogOpen] = useState(false);
 
-  const {
-    mutate: acceptService,
-    isPending: acceptPending,
-  } = useAcceptServiceRequest();
+  const { mutate: acceptService, isPending: acceptPending } =
+    useAcceptServiceRequest();
 
-  const {
-    mutate: startService,
-    isPending: startPending,
-  } = useStartServiceRequest();
+  const { mutate: startService, isPending: startPending } =
+    useStartServiceRequest();
 
   const handleAccept = () => {
     acceptService(serviceRequestId, {
@@ -56,8 +44,7 @@ export default function ServiceStatusActions({
           toast.add({
             title: "Accept Failed",
             description:
-              response.message ??
-              "Unable to accept service request.",
+              response.message ?? "Unable to accept service request.",
             type: "error",
           });
 
@@ -66,8 +53,7 @@ export default function ServiceStatusActions({
 
         toast.add({
           title: "Service Accepted",
-          description:
-            "Service request accepted successfully.",
+          description: "Service request accepted successfully.",
           type: "success",
         });
 
@@ -77,8 +63,7 @@ export default function ServiceStatusActions({
       onError: () => {
         toast.add({
           title: "Accept Failed",
-          description:
-            "Unable to accept service request. Please try again.",
+          description: "Unable to accept service request. Please try again.",
           type: "error",
         });
       },
@@ -91,9 +76,7 @@ export default function ServiceStatusActions({
         if (!response.success) {
           toast.add({
             title: "Start Failed",
-            description:
-              response.message ??
-              "Unable to start service.",
+            description: response.message ?? "Unable to start service.",
             type: "error",
           });
 
@@ -102,8 +85,7 @@ export default function ServiceStatusActions({
 
         toast.add({
           title: "Service Started",
-          description:
-            "Service is now in progress.",
+          description: "Service is now in progress.",
           type: "success",
         });
 
@@ -113,8 +95,7 @@ export default function ServiceStatusActions({
       onError: () => {
         toast.add({
           title: "Start Failed",
-          description:
-            "Unable to start service. Please try again.",
+          description: "Unable to start service. Please try again.",
           type: "error",
         });
       },
@@ -127,10 +108,7 @@ export default function ServiceStatusActions({
    */
   if (status === "ASSIGNED") {
     return (
-      <Button
-        onClick={handleAccept}
-        disabled={acceptPending}
-      >
+      <Button onClick={handleAccept} disabled={acceptPending}>
         {acceptPending ? (
           <>
             <Spinner />
@@ -152,10 +130,7 @@ export default function ServiceStatusActions({
    */
   if (status === "ACCEPTED") {
     return (
-      <Button
-        onClick={handleStart}
-        disabled={startPending}
-      >
+      <Button onClick={handleStart} disabled={startPending}>
         {startPending ? (
           <>
             <Spinner />
@@ -178,11 +153,7 @@ export default function ServiceStatusActions({
   if (status === "IN_PROGRESS") {
     return (
       <>
-        <Button
-          onClick={() =>
-            setCompleteDialogOpen(true)
-          }
-        >
+        <Button onClick={() => setCompleteDialogOpen(true)}>
           <CheckCircle2 />
           Complete Service
         </Button>

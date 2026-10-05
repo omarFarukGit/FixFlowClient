@@ -32,10 +32,7 @@ export default function CompleteServiceDialog({
 }: CompleteServiceDialogProps) {
   const [finalPrice, setFinalPrice] = useState("");
 
-  const {
-    mutate: completeService,
-    isPending,
-  } = useCompleteServiceRequest();
+  const { mutate: completeService, isPending } = useCompleteServiceRequest();
 
   const handleComplete = () => {
     const trimmedPrice = finalPrice.trim();
@@ -43,8 +40,7 @@ export default function CompleteServiceDialog({
     if (!trimmedPrice) {
       toast.add({
         title: "Final Price Required",
-        description:
-          "Please enter the final service price.",
+        description: "Please enter the final service price.",
         type: "error",
       });
 
@@ -56,8 +52,7 @@ export default function CompleteServiceDialog({
     if (!Number.isFinite(price) || price <= 0) {
       toast.add({
         title: "Invalid Price",
-        description:
-          "Please enter a valid final price.",
+        description: "Please enter a valid final price.",
         type: "error",
       });
 
@@ -74,9 +69,7 @@ export default function CompleteServiceDialog({
           if (!response.success) {
             toast.add({
               title: "Completion Failed",
-              description:
-                response.message ??
-                "Unable to complete service.",
+              description: response.message ?? "Unable to complete service.",
               type: "error",
             });
 
@@ -85,8 +78,7 @@ export default function CompleteServiceDialog({
 
           toast.add({
             title: "Service Completed",
-            description:
-              "Service has been completed successfully.",
+            description: "Service has been completed successfully.",
             type: "success",
           });
 
@@ -98,8 +90,7 @@ export default function CompleteServiceDialog({
         onError: () => {
           toast.add({
             title: "Completion Failed",
-            description:
-              "Unable to complete service. Please try again.",
+            description: "Unable to complete service. Please try again.",
             type: "error",
           });
         },
@@ -120,10 +111,7 @@ export default function CompleteServiceDialog({
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={handleDialogChange}
-    >
+    <Dialog open={open} onOpenChange={handleDialogChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -132,16 +120,12 @@ export default function CompleteServiceDialog({
           </DialogTitle>
 
           <DialogDescription>
-            Enter the final price before completing this
-            service request.
+            Enter the final price before completing this service request.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-2 py-4">
-          <label
-            htmlFor="finalPrice"
-            className="text-sm font-medium"
-          >
+          <label htmlFor="finalPrice" className="text-sm font-medium">
             Final Price
           </label>
 
@@ -158,17 +142,14 @@ export default function CompleteServiceDialog({
               step="1"
               placeholder="Enter final price"
               value={finalPrice}
-              onChange={(event) =>
-                setFinalPrice(event.target.value)
-              }
+              onChange={(event) => setFinalPrice(event.target.value)}
               disabled={isPending}
               className="pl-8"
             />
           </div>
 
           <p className="text-xs text-muted-foreground">
-            This amount will be saved as the final service
-            price.
+            This amount will be saved as the final service price.
           </p>
         </div>
 
@@ -176,9 +157,7 @@ export default function CompleteServiceDialog({
           <Button
             type="button"
             variant="outline"
-            onClick={() =>
-              handleDialogChange(false)
-            }
+            onClick={() => handleDialogChange(false)}
             disabled={isPending}
           >
             Cancel
@@ -187,9 +166,7 @@ export default function CompleteServiceDialog({
           <Button
             type="button"
             onClick={handleComplete}
-            disabled={
-              isPending || !finalPrice.trim()
-            }
+            disabled={isPending || !finalPrice.trim()}
           >
             {isPending ? (
               <>
