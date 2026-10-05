@@ -12,6 +12,7 @@ export interface ITechnicianProfile {
   totalJobs: number;
   createdAt: string;
   updatedAt: string;
+  activeTechnicians: string;
 }
 
 export interface ITechnician {

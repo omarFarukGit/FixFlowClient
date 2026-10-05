@@ -22,3 +22,14 @@ export function assignTechnicianToServiceRequest(
     body: { technicianId },
   });
 }
+export function approveTechnician(technicianId: string) {
+  return apiClient(`/technicians/${technicianId}/approve`, {
+    method: "PATCH",
+  });
+}
+export function updateTechnicianStatus(technicianId: string, status: string) {
+  return apiClient(`/technicians/${technicianId}/status`, {
+    method: "PATCH",
+    body: { status },
+  });
+}

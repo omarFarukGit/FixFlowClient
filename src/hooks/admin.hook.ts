@@ -1,8 +1,10 @@
 import {
+  approveTechnician,
   assignTechnicianToServiceRequest,
   getAllCustomers,
   getAllServicesRequest,
   getAllThecnicians,
+  updateTechnicianStatus,
 } from "@/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -35,5 +37,17 @@ export function useAssignTechnician() {
       serviceRequestId: string;
       technicianId: string;
     }) => assignTechnicianToServiceRequest(serviceRequestId, technicianId),
+  });
+}
+
+export function useApproveTechnician() {
+  return useMutation({
+    mutationFn: (technicianId: string) => approveTechnician(technicianId),
+  });
+}
+export function useUpdateUserStatus() {
+  return useMutation({
+    mutationFn: ({ technicianId, status }: { technicianId: string; status: string }) =>
+      updateTechnicianStatus(technicianId, status),
   });
 }
