@@ -47,7 +47,12 @@ export function useApproveTechnician() {
 }
 export function useUpdateUserStatus() {
   return useMutation({
-    mutationFn: ({ technicianId, status }: { technicianId: string; status: string }) =>
-      updateTechnicianStatus(technicianId, status),
+    mutationFn: ({
+      technicianId,
+      status,
+    }: {
+      technicianId: string;
+      status: string;
+    }) => updateTechnicianStatus(technicianId, status),
   });
 }

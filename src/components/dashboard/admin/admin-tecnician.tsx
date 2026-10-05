@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -14,12 +13,7 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -42,9 +36,9 @@ export default function AdminTechnicians() {
     status: string;
   } | null>(null);
 
-  const [statusAction, setStatusAction] = useState<
-    "BLOCK" | "UNBLOCK" | null
-  >(null);
+  const [statusAction, setStatusAction] = useState<"BLOCK" | "UNBLOCK" | null>(
+    null,
+  );
 
   const {
     data: techniciansResponse,
@@ -53,27 +47,19 @@ export default function AdminTechnicians() {
     refetch,
   } = useGetTechnicians();
 
-  const {
-    mutate: updateUserStatus,
-    isPending: statusPending,
-  } = useUpdateUserStatus();
+  const { mutate: updateUserStatus, isPending: statusPending } =
+    useUpdateUserStatus();
 
   const technicians = techniciansResponse?.data ?? [];
 
-  const openStatusDialog = (
-    technician: (typeof technicians)[number],
-  ) => {
+  const openStatusDialog = (technician: (typeof technicians)[number]) => {
     setSelectedTechnician({
       id: technician.id,
       name: technician.name,
       status: technician.status,
     });
 
-    setStatusAction(
-      technician.status === "SUSPENDED"
-        ? "UNBLOCK"
-        : "BLOCK",
-    );
+    setStatusAction(technician.status === "SUSPENDED" ? "UNBLOCK" : "BLOCK");
   };
 
   const closeStatusDialog = () => {
@@ -90,8 +76,7 @@ export default function AdminTechnicians() {
       return;
     }
 
-    const newStatus =
-      statusAction === "BLOCK" ? "SUSPENDED" : "ACTIVE";
+    const newStatus = statusAction === "BLOCK" ? "SUSPENDED" : "ACTIVE";
 
     updateUserStatus(
       {
@@ -103,12 +88,9 @@ export default function AdminTechnicians() {
           if (!response.success) {
             toast.add({
               title:
-                statusAction === "BLOCK"
-                  ? "Block Failed"
-                  : "Unblock Failed",
+                statusAction === "BLOCK" ? "Block Failed" : "Unblock Failed",
               description:
-                response.message ??
-                "Unable to update technician status.",
+                response.message ?? "Unable to update technician status.",
               type: "error",
             });
 
@@ -133,12 +115,8 @@ export default function AdminTechnicians() {
 
         onError: () => {
           toast.add({
-            title:
-              statusAction === "BLOCK"
-                ? "Block Failed"
-                : "Unblock Failed",
-            description:
-              "Something went wrong. Please try again.",
+            title: statusAction === "BLOCK" ? "Block Failed" : "Unblock Failed",
+            description: "Something went wrong. Please try again.",
             type: "error",
           });
         },
@@ -155,7 +133,14 @@ export default function AdminTechnicians() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {["skeleton-a", "skeleton-b", "skeleton-c", "skeleton-d", "skeleton-e", "skeleton-f"].map((skeletonKey) => (
+          {[
+            "skeleton-a",
+            "skeleton-b",
+            "skeleton-c",
+            "skeleton-d",
+            "skeleton-e",
+            "skeleton-f",
+          ].map((skeletonKey) => (
             <Card key={skeletonKey}>
               <CardHeader>
                 <div className="flex items-center gap-3">
@@ -197,8 +182,8 @@ export default function AdminTechnicians() {
     (technician: ITechnician) => technician.status === "ACTIVE",
   ).length;
 
-  const blockedTechnicians:ITechnician[] = technicians.filter(
-    (technician:ITechnician) => technician.status === "SUSPENDED",
+  const blockedTechnicians: ITechnician[] = technicians.filter(
+    (technician: ITechnician) => technician.status === "SUSPENDED",
   ).length;
 
   return (
@@ -206,9 +191,7 @@ export default function AdminTechnicians() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            Technicians
-          </h1>
+          <h1 className="text-2xl font-bold tracking-tight">Technicians</h1>
 
           <p className="text-sm text-muted-foreground">
             Manage and monitor all registered technicians.
@@ -229,8 +212,7 @@ export default function AdminTechnicians() {
                 </p>
 
                 <p className="text-2xl font-bold">
-                  {techniciansResponse?.meta?.total ??
-                    technicians.length}
+                  {techniciansResponse?.meta?.total ?? technicians.length}
                 </p>
               </div>
             </CardContent>
@@ -247,9 +229,7 @@ export default function AdminTechnicians() {
                   Active Technicians
                 </p>
 
-                <p className="text-2xl font-bold">
-                  {activeTechnicians}
-                </p>
+                <p className="text-2xl font-bold">{activeTechnicians}</p>
               </div>
             </CardContent>
           </Card>
@@ -265,9 +245,7 @@ export default function AdminTechnicians() {
                   Blocked Technicians
                 </p>
 
-                <p className="text-2xl font-bold">
-                
-                </p>
+                <p className="text-2xl font-bold"></p>
               </div>
             </CardContent>
           </Card>
@@ -279,9 +257,7 @@ export default function AdminTechnicians() {
             <CardContent className="flex min-h-48 flex-col items-center justify-center text-center">
               <UserRound className="mb-3 size-10 text-muted-foreground" />
 
-              <h3 className="font-semibold">
-                No technicians found
-              </h3>
+              <h3 className="font-semibold">No technicians found</h3>
 
               <p className="mt-1 text-sm text-muted-foreground">
                 There are no registered technicians yet.
@@ -293,8 +269,7 @@ export default function AdminTechnicians() {
             {technicians.map((technician: ITechnician) => {
               const profile = technician.technicianProfile;
 
-              const isBlocked =
-                technician.status === "SUSPENDED";
+              const isBlocked = technician.status === "SUSPENDED";
 
               return (
                 <Card
@@ -349,18 +324,13 @@ export default function AdminTechnicians() {
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Mail className="size-4 shrink-0" />
 
-                        <span className="truncate">
-                          {technician.email}
-                        </span>
+                        <span className="truncate">{technician.email}</span>
                       </div>
 
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Phone className="size-4 shrink-0" />
 
-                        <span>
-                          {technician.phone ??
-                            "No phone number"}
-                        </span>
+                        <span>{technician.phone ?? "No phone number"}</span>
                       </div>
                     </div>
 
@@ -393,8 +363,7 @@ export default function AdminTechnicians() {
                         </div>
 
                         <p className="text-lg font-semibold">
-                          {profile?.averageRating?.toFixed(1) ??
-                            "0.0"}
+                          {profile?.averageRating?.toFixed(1) ?? "0.0"}
                         </p>
 
                         <p className="text-[11px] text-muted-foreground">
@@ -420,18 +389,17 @@ export default function AdminTechnicians() {
                     {/* Joined + Action */}
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <p className="text-xs text-muted-foreground">
-                          Joined
-                        </p>
+                        <p className="text-xs text-muted-foreground">Joined</p>
 
                         <p className="mt-1 text-sm font-medium">
-                          {new Date(
-                            technician.createdAt,
-                          ).toLocaleDateString("en-BD", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
+                          {new Date(technician.createdAt).toLocaleDateString(
+                            "en-BD",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            },
+                          )}
                         </p>
                       </div>
 
@@ -504,11 +472,7 @@ export default function AdminTechnicians() {
 
             <Button
               type="button"
-              variant={
-                statusAction === "BLOCK"
-                  ? "destructive"
-                  : "default"
-              }
+              variant={statusAction === "BLOCK" ? "destructive" : "default"}
               onClick={handleStatusChange}
               disabled={statusPending}
             >
@@ -516,9 +480,7 @@ export default function AdminTechnicians() {
                 <>
                   <Spinner />
 
-                  {statusAction === "BLOCK"
-                    ? "Blocking..."
-                    : "Unblocking..."}
+                  {statusAction === "BLOCK" ? "Blocking..." : "Unblocking..."}
                 </>
               ) : statusAction === "BLOCK" ? (
                 <>
