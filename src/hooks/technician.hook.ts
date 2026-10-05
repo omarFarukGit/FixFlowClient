@@ -1,5 +1,11 @@
-import { getMyServiceRequests } from "@/api";
-import { useQuery } from "@tanstack/react-query";
+import {
+  acceptServiceRequest,
+  completeServiceRequest,
+  getMyServiceRequests,
+  getServiceRequestById,
+  startServiceRequest,
+} from "@/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export function useGetMyServiceRequests() {
   return useQuery({
@@ -8,3 +14,29 @@ export function useGetMyServiceRequests() {
     retry: false,
   });
 }
+
+export const useGetServiceRequestById = (serviceRequestId: string) => {
+  return useQuery({
+    queryKey: ["service-request", serviceRequestId],
+    queryFn: () => getServiceRequestById(serviceRequestId),
+    enabled: Boolean(serviceRequestId),
+  });
+};
+
+export const useAcceptServiceRequest = () => {
+  return useMutation({
+    mutationFn: acceptServiceRequest,
+  });
+};
+
+export const useStartServiceRequest = () => {
+  return useMutation({
+    mutationFn: startServiceRequest,
+  });
+};
+
+export const useCompleteServiceRequest = () => {
+  return useMutation({
+    mutationFn: completeServiceRequest,
+  });
+};
