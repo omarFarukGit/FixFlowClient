@@ -37,10 +37,10 @@ export const adminRoutes = [
         title: "Service Requests",
         url: `${prefix}/service-requests`,
       },
-      {
-        title: "Assign Technician",
-        url: `${prefix}/service-requests/assign`,
-      },
+      // {
+      //   title: "Assign Technician",
+      //   url: `${prefix}/service-requests/assign`,
+      // },
       {
         title: "Categories",
         url: `${prefix}/categories`,
