@@ -83,7 +83,12 @@ export function LoginForm({
               type: "success",
             });
 
-            router.push("/");
+            const role = res.data?.user?.role;
+            console.log(role);
+
+            if (role === "ADMIN") router.push("/admin");
+            else if (role === "TECHNICIAN") router.push("/technician");
+            else if (role === "CUSTOMER") router.push("/customer");
           }
         },
 
