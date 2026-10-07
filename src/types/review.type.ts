@@ -54,3 +54,36 @@ export const formatPrice = (value: string | number | null | undefined) => {
 
   return `৳${Number(value).toLocaleString("en-BD")}`;
 };
+
+ export type CustomerReview = {
+  id: string;
+  rating: number;
+  comment?: string | null;
+  serviceRequestId: string;
+  reviewerId: string;
+  technicianId: string;
+  createdAt: string;
+  updatedAt: string;
+
+  technician?: {
+    id: string;
+    name: string;
+    email?: string | null;
+    phone?: string | null;
+    imageUrl?: string | null;
+
+    technicianProfile?: {
+      bio?: string | null;
+      experienceYears?: number;
+      averageRating?: number;
+      totalJobs?: number;
+    } | null;
+  } | null;
+
+  serviceRequest?: {
+    id: string;
+    title: string;
+    status: string;
+    finalPrice?: string | number | null;
+  } | null;
+};
