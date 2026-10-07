@@ -33,3 +33,7 @@ export function updateTechnicianStatus(technicianId: string, status: string) {
     body: { status },
   });
 }
+
+export function getAuditLogs() {
+  return apiClient("/audit-logs", { method: "GET" });
+}

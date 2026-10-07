@@ -4,6 +4,7 @@ import {
   getAllCustomers,
   getAllServicesRequest,
   getAllThecnicians,
+  getAuditLogs,
   updateTechnicianStatus,
 } from "@/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -54,5 +55,12 @@ export function useUpdateUserStatus() {
       technicianId: string;
       status: string;
     }) => updateTechnicianStatus(technicianId, status),
+  });
+}
+
+export function useGetAuditLogs() {
+  return useQuery({
+    queryKey: ["audit-logs"],
+    queryFn: getAuditLogs,
   });
 }
