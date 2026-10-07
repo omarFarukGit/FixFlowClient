@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -13,21 +12,11 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { useGetPayments } from "@/hooks";
 
-type PaymentStatus =
-  | "PENDING"
-  | "PAID"
-  | "FAILED"
-  | "CANCELLED"
-  | "REFUNDED";
+type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED" | "REFUNDED";
 
 type TechnicianPayment = {
   id: string;
@@ -69,8 +58,7 @@ const statusConfig: Record<
   },
   FAILED: {
     label: "Failed",
-    className:
-      "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+    className: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
     icon: XCircle,
   },
   CANCELLED: {
@@ -87,10 +75,7 @@ const statusConfig: Record<
   },
 };
 
-function formatAmount(
-  amount: string | number,
-  currency: string,
-) {
+function formatAmount(amount: string | number, currency: string) {
   const numericAmount = Number(amount);
 
   if (Number.isNaN(numericAmount)) {
@@ -109,11 +94,7 @@ function formatDate(date: string) {
 }
 
 export default function TechnicianPaymentHistory() {
-  const {
-    data: response,
-    isLoading,
-    isError,
-  } = useGetPayments();
+  const { data: response, isLoading, isError } = useGetPayments();
 
   /**
    * Supports:
@@ -123,9 +104,7 @@ export default function TechnicianPaymentHistory() {
   const payments: TechnicianPayment[] =
     response?.data?.data ?? response?.data ?? [];
 
-  const paidPayments = payments.filter(
-    (payment) => payment.status === "PAID",
-  );
+  const paidPayments = payments.filter((payment) => payment.status === "PAID");
 
   const totalEarnings = paidPayments.reduce(
     (total, payment) => total + Number(payment.amount || 0),
@@ -134,10 +113,7 @@ export default function TechnicianPaymentHistory() {
 
   const pendingAmount = payments
     .filter((payment) => payment.status === "PENDING")
-    .reduce(
-      (total, payment) => total + Number(payment.amount || 0),
-      0,
-    );
+    .reduce((total, payment) => total + Number(payment.amount || 0), 0);
 
   if (isLoading) {
     return (
@@ -163,9 +139,7 @@ export default function TechnicianPaymentHistory() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          Payment History
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight">Payment History</h1>
         <p className="text-muted-foreground">
           View your service payment history and earnings.
         </p>
@@ -180,9 +154,7 @@ export default function TechnicianPaymentHistory() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                Total Earnings
-              </p>
+              <p className="text-sm text-muted-foreground">Total Earnings</p>
               <p className="text-xl font-bold">
                 {totalEarnings.toLocaleString("en-BD")} BDT
               </p>
@@ -197,12 +169,8 @@ export default function TechnicianPaymentHistory() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                Paid Payments
-              </p>
-              <p className="text-xl font-bold">
-                {paidPayments.length}
-              </p>
+              <p className="text-sm text-muted-foreground">Paid Payments</p>
+              <p className="text-xl font-bold">{paidPayments.length}</p>
             </div>
           </CardContent>
         </Card>
@@ -214,9 +182,7 @@ export default function TechnicianPaymentHistory() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                Pending Amount
-              </p>
+              <p className="text-sm text-muted-foreground">Pending Amount</p>
               <p className="text-xl font-bold">
                 {pendingAmount.toLocaleString("en-BD")} BDT
               </p>
@@ -239,9 +205,7 @@ export default function TechnicianPaymentHistory() {
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Receipt className="mb-3 size-10 text-muted-foreground" />
 
-              <h3 className="font-semibold">
-                No payment history
-              </h3>
+              <h3 className="font-semibold">No payment history</h3>
 
               <p className="mt-1 text-sm text-muted-foreground">
                 Your service payments will appear here.
@@ -254,21 +218,11 @@ export default function TechnicianPaymentHistory() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b text-left text-sm text-muted-foreground">
-                      <th className="px-4 py-3 font-medium">
-                        Service
-                      </th>
-                      <th className="px-4 py-3 font-medium">
-                        Amount
-                      </th>
-                      <th className="px-4 py-3 font-medium">
-                        Method
-                      </th>
-                      <th className="px-4 py-3 font-medium">
-                        Status
-                      </th>
-                      <th className="px-4 py-3 font-medium">
-                        Date
-                      </th>
+                      <th className="px-4 py-3 font-medium">Service</th>
+                      <th className="px-4 py-3 font-medium">Amount</th>
+                      <th className="px-4 py-3 font-medium">Method</th>
+                      <th className="px-4 py-3 font-medium">Status</th>
+                      <th className="px-4 py-3 font-medium">Date</th>
                       <th className="px-4 py-3 text-right font-medium">
                         Action
                       </th>
@@ -277,51 +231,36 @@ export default function TechnicianPaymentHistory() {
 
                   <tbody>
                     {payments.map((payment) => {
-                      const config =
-                        statusConfig[payment.status];
+                      const config = statusConfig[payment.status];
 
                       const StatusIcon = config.icon;
 
                       return (
-                        <tr
-                          key={payment.id}
-                          className="border-b last:border-0"
-                        >
+                        <tr key={payment.id} className="border-b last:border-0">
                           <td className="px-4 py-4">
                             <div>
                               <p className="font-medium">
-                                {payment.serviceRequest
-                                  ?.title ?? "Service Request"}
+                                {payment.serviceRequest?.title ??
+                                  "Service Request"}
                               </p>
 
                               <p className="text-xs text-muted-foreground">
-                                ID:{" "}
-                                {payment.serviceRequestId.slice(
-                                  0,
-                                  8,
-                                )}
+                                ID: {payment.serviceRequestId.slice(0, 8)}
                                 ...
                               </p>
                             </div>
                           </td>
 
                           <td className="px-4 py-4 font-semibold">
-                            {formatAmount(
-                              payment.amount,
-                              payment.currency,
-                            )}
+                            {formatAmount(payment.amount, payment.currency)}
                           </td>
 
                           <td className="px-4 py-4">
-                            <Badge variant="outline">
-                              {payment.method}
-                            </Badge>
+                            <Badge variant="outline">{payment.method}</Badge>
                           </td>
 
                           <td className="px-4 py-4">
-                            <Badge
-                              className={config.className}
-                            >
+                            <Badge className={config.className}>
                               <StatusIcon className="mr-1 size-3" />
                               {config.label}
                             </Badge>
@@ -332,11 +271,7 @@ export default function TechnicianPaymentHistory() {
                           </td>
 
                           <td className="px-4 py-4 text-right">
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
-                            >
+                            <Button asChild variant="outline" size="sm">
                               <Link
                                 href={`/technician/services/${payment.serviceRequestId}`}
                               >
@@ -354,33 +289,24 @@ export default function TechnicianPaymentHistory() {
               {/* Mobile */}
               <div className="space-y-4 md:hidden">
                 {payments.map((payment) => {
-                  const config =
-                    statusConfig[payment.status];
+                  const config = statusConfig[payment.status];
 
                   const StatusIcon = config.icon;
 
                   return (
-                    <div
-                      key={payment.id}
-                      className="rounded-lg border p-4"
-                    >
+                    <div key={payment.id} className="rounded-lg border p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <h3 className="truncate font-semibold">
-                            {payment.serviceRequest
-                              ?.title ?? "Service Request"}
+                            {payment.serviceRequest?.title ?? "Service Request"}
                           </h3>
 
                           <p className="mt-1 text-xs text-muted-foreground">
-                            Payment ID:{" "}
-                            {payment.id.slice(0, 8)}...
+                            Payment ID: {payment.id.slice(0, 8)}...
                           </p>
                         </div>
 
-                        <Badge
-                          className={config.className}
-                          variant="outline"
-                        >
+                        <Badge className={config.className} variant="outline">
                           <StatusIcon className="mr-1 size-3" />
                           {config.label}
                         </Badge>
@@ -388,38 +314,23 @@ export default function TechnicianPaymentHistory() {
 
                       <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <p className="text-muted-foreground">
-                            Amount
-                          </p>
+                          <p className="text-muted-foreground">Amount</p>
                           <p className="font-semibold">
-                            {formatAmount(
-                              payment.amount,
-                              payment.currency,
-                            )}
+                            {formatAmount(payment.amount, payment.currency)}
                           </p>
                         </div>
 
                         <div>
-                          <p className="text-muted-foreground">
-                            Method
-                          </p>
-                          <p className="font-medium">
-                            {payment.method}
-                          </p>
+                          <p className="text-muted-foreground">Method</p>
+                          <p className="font-medium">{payment.method}</p>
                         </div>
 
                         <div>
-                          <p className="text-muted-foreground">
-                            Date
-                          </p>
+                          <p className="text-muted-foreground">Date</p>
 
                           <div className="flex items-center gap-1">
                             <CalendarDays className="size-3.5 text-muted-foreground" />
-                            <span>
-                              {formatDate(
-                                payment.createdAt,
-                              )}
-                            </span>
+                            <span>{formatDate(payment.createdAt)}</span>
                           </div>
                         </div>
 
@@ -428,8 +339,7 @@ export default function TechnicianPaymentHistory() {
                             Service Status
                           </p>
                           <p className="font-medium">
-                            {payment.serviceRequest
-                              ?.status ?? "N/A"}
+                            {payment.serviceRequest?.status ?? "N/A"}
                           </p>
                         </div>
                       </div>

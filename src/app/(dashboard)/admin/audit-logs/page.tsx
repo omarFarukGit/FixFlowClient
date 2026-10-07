@@ -1,4 +1,3 @@
-
 import AdminAuditLogs from "@/components/dashboard/admin/admin-audit-logs";
 
 export default function AdminAuditLogsPage() {
@@ -8,4 +7,3 @@ export default function AdminAuditLogsPage() {
     </main>
   );
 }
-

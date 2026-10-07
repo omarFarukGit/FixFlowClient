@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -14,22 +13,12 @@ import { useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { useGetAllPayments, useGetPayments } from "@/hooks";
 
-type PaymentStatus =
-  | "PENDING"
-  | "PAID"
-  | "FAILED"
-  | "CANCELLED"
-  | "REFUNDED";
+type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED" | "REFUNDED";
 
 type AdminPayment = {
   id: string;
@@ -111,8 +100,7 @@ const statusConfig: Record<
   },
   FAILED: {
     label: "Failed",
-    className:
-      "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+    className: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
     icon: XCircle,
   },
   CANCELLED: {
@@ -129,10 +117,7 @@ const statusConfig: Record<
   },
 };
 
-function formatAmount(
-  amount: string | number,
-  currency: string,
-) {
+function formatAmount(amount: string | number, currency: string) {
   const value = Number(amount);
 
   if (Number.isNaN(value)) {
@@ -152,18 +137,14 @@ function formatDate(date: string) {
 
 export default function AdminPayments() {
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] =
-    useState<"ALL" | PaymentStatus>("ALL");
+  const [statusFilter, setStatusFilter] = useState<"ALL" | PaymentStatus>(
+    "ALL",
+  );
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    data: response,
-    isLoading,
-    isError,
-  } = useGetAllPayments();
+  const { data: response, isLoading, isError } = useGetAllPayments();
 
-  const apiResponse =
-    response as PaymentResponse | undefined;
+  const apiResponse = response as PaymentResponse | undefined;
 
   const payments = useMemo(() => {
     if (!apiResponse?.data) {
@@ -178,14 +159,11 @@ export default function AdminPayments() {
   }, [apiResponse]);
 
   const filteredPayments = useMemo(() => {
-    const normalizedSearch = search
-      .trim()
-      .toLowerCase();
+    const normalizedSearch = search.trim().toLowerCase();
 
     return payments.filter((payment) => {
       const matchesStatus =
-        statusFilter === "ALL" ||
-        payment.status === statusFilter;
+        statusFilter === "ALL" || payment.status === statusFilter;
 
       if (!matchesStatus) {
         return false;
@@ -195,17 +173,13 @@ export default function AdminPayments() {
         return true;
       }
 
-      const serviceTitle =
-        payment.serviceRequest?.title ?? "";
+      const serviceTitle = payment.serviceRequest?.title ?? "";
 
-      const customerName =
-        payment.serviceRequest?.customer?.name ?? "";
+      const customerName = payment.serviceRequest?.customer?.name ?? "";
 
-      const customerEmail =
-        payment.serviceRequest?.customer?.email ?? "";
+      const customerEmail = payment.serviceRequest?.customer?.email ?? "";
 
-      const technicianName =
-        payment.serviceRequest?.technician?.name ?? "";
+      const technicianName = payment.serviceRequest?.technician?.name ?? "";
 
       return [
         payment.id,
@@ -216,9 +190,7 @@ export default function AdminPayments() {
         customerName,
         customerEmail,
         technicianName,
-      ].some((value) =>
-        value.toLowerCase().includes(normalizedSearch),
-      );
+      ].some((value) => value.toLowerCase().includes(normalizedSearch));
     });
   }, [payments, search, statusFilter]);
 
@@ -228,47 +200,29 @@ export default function AdminPayments() {
   );
 
   const paginatedPayments = useMemo(() => {
-    const startIndex =
-      (currentPage - 1) * PAGE_SIZE;
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
 
-    return filteredPayments.slice(
-      startIndex,
-      startIndex + PAGE_SIZE,
-    );
+    return filteredPayments.slice(startIndex, startIndex + PAGE_SIZE);
   }, [filteredPayments, currentPage]);
 
   const totalRevenue = payments
     .filter((payment) => payment.status === "PAID")
-    .reduce(
-      (total, payment) =>
-        total + Number(payment.amount || 0),
-      0,
-    );
+    .reduce((total, payment) => total + Number(payment.amount || 0), 0);
 
   const pendingAmount = payments
     .filter((payment) => payment.status === "PENDING")
-    .reduce(
-      (total, payment) =>
-        total + Number(payment.amount || 0),
-      0,
-    );
+    .reduce((total, payment) => total + Number(payment.amount || 0), 0);
 
   const failedPayments = payments.filter(
-    (payment) =>
-      payment.status === "FAILED" ||
-      payment.status === "CANCELLED",
+    (payment) => payment.status === "FAILED" || payment.status === "CANCELLED",
   ).length;
 
-  const handleSearchChange = (
-    value: string,
-  ) => {
+  const handleSearchChange = (value: string) => {
     setSearch(value);
     setCurrentPage(1);
   };
 
-  const handleStatusChange = (
-    status: "ALL" | PaymentStatus,
-  ) => {
+  const handleStatusChange = (status: "ALL" | PaymentStatus) => {
     setStatusFilter(status);
     setCurrentPage(1);
   };
@@ -285,9 +239,7 @@ export default function AdminPayments() {
     return (
       <Card>
         <CardContent className="flex min-h-[300px] items-center justify-center">
-          <p className="text-sm text-destructive">
-            Failed to load payments.
-          </p>
+          <p className="text-sm text-destructive">Failed to load payments.</p>
         </CardContent>
       </Card>
     );
@@ -297,9 +249,7 @@ export default function AdminPayments() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          All Payments
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight">All Payments</h1>
 
         <p className="text-muted-foreground">
           Manage and monitor all customer payments.
@@ -315,9 +265,7 @@ export default function AdminPayments() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                Total Revenue
-              </p>
+              <p className="text-sm text-muted-foreground">Total Revenue</p>
 
               <p className="text-xl font-bold">
                 {totalRevenue.toLocaleString("en-BD")} BDT
@@ -333,13 +281,9 @@ export default function AdminPayments() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                Total Payments
-              </p>
+              <p className="text-sm text-muted-foreground">Total Payments</p>
 
-              <p className="text-xl font-bold">
-                {payments.length}
-              </p>
+              <p className="text-xl font-bold">{payments.length}</p>
             </div>
           </CardContent>
         </Card>
@@ -351,9 +295,7 @@ export default function AdminPayments() {
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground">
-                Pending Amount
-              </p>
+              <p className="text-sm text-muted-foreground">Pending Amount</p>
 
               <p className="text-xl font-bold">
                 {pendingAmount.toLocaleString("en-BD")} BDT
@@ -373,9 +315,7 @@ export default function AdminPayments() {
                 Failed / Cancelled
               </p>
 
-              <p className="text-xl font-bold">
-                {failedPayments}
-              </p>
+              <p className="text-xl font-bold">{failedPayments}</p>
             </div>
           </CardContent>
         </Card>
@@ -396,9 +336,7 @@ export default function AdminPayments() {
 
               <Input
                 value={search}
-                onChange={(e) =>
-                  handleSearchChange(e.target.value)
-                }
+                onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder="Search payments..."
                 className="pl-9"
               />
@@ -409,44 +347,30 @@ export default function AdminPayments() {
         <CardContent className="space-y-5">
           {/* Status Filter */}
           <div className="flex flex-wrap gap-2">
-            {[
-              "ALL",
-              "PAID",
-              "PENDING",
-              "FAILED",
-              "CANCELLED",
-              "REFUNDED",
-            ].map((status) => (
-              <Button
-                key={status}
-                type="button"
-                size="sm"
-                variant={
-                  statusFilter === status
-                    ? "default"
-                    : "outline"
-                }
-                onClick={() =>
-                  handleStatusChange(
-                    status as "ALL" | PaymentStatus,
-                  )
-                }
-              >
-                {status === "ALL"
-                  ? "All"
-                  : status.charAt(0) +
-                    status.slice(1).toLowerCase()}
-              </Button>
-            ))}
+            {["ALL", "PAID", "PENDING", "FAILED", "CANCELLED", "REFUNDED"].map(
+              (status) => (
+                <Button
+                  key={status}
+                  type="button"
+                  size="sm"
+                  variant={statusFilter === status ? "default" : "outline"}
+                  onClick={() =>
+                    handleStatusChange(status as "ALL" | PaymentStatus)
+                  }
+                >
+                  {status === "ALL"
+                    ? "All"
+                    : status.charAt(0) + status.slice(1).toLowerCase()}
+                </Button>
+              ),
+            )}
           </div>
 
           {filteredPayments.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Receipt className="mb-3 size-10 text-muted-foreground" />
 
-              <h3 className="font-semibold">
-                No payments found
-              </h3>
+              <h3 className="font-semibold">No payments found</h3>
 
               <p className="mt-1 text-sm text-muted-foreground">
                 Try changing your search or filter.
@@ -459,61 +383,39 @@ export default function AdminPayments() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b text-left text-sm text-muted-foreground">
-                      <th className="px-4 py-3 font-medium">
-                        Service
-                      </th>
+                      <th className="px-4 py-3 font-medium">Service</th>
 
-                      <th className="px-4 py-3 font-medium">
-                        Customer
-                      </th>
+                      <th className="px-4 py-3 font-medium">Customer</th>
 
-                      <th className="px-4 py-3 font-medium">
-                        Technician
-                      </th>
+                      <th className="px-4 py-3 font-medium">Technician</th>
 
-                      <th className="px-4 py-3 font-medium">
-                        Amount
-                      </th>
+                      <th className="px-4 py-3 font-medium">Amount</th>
 
-                      <th className="px-4 py-3 font-medium">
-                        Method
-                      </th>
+                      <th className="px-4 py-3 font-medium">Method</th>
 
-                      <th className="px-4 py-3 font-medium">
-                        Status
-                      </th>
+                      <th className="px-4 py-3 font-medium">Status</th>
 
-                      <th className="px-4 py-3 font-medium">
-                        Date
-                      </th>
+                      <th className="px-4 py-3 font-medium">Date</th>
                     </tr>
                   </thead>
 
                   <tbody>
                     {paginatedPayments.map((payment) => {
-                      const config =
-                        statusConfig[payment.status];
+                      const config = statusConfig[payment.status];
 
                       const StatusIcon = config.icon;
 
                       return (
-                        <tr
-                          key={payment.id}
-                          className="border-b last:border-0"
-                        >
+                        <tr key={payment.id} className="border-b last:border-0">
                           <td className="px-4 py-4">
                             <div>
                               <p className="max-w-[180px] truncate font-medium">
-                                {payment.serviceRequest
-                                  ?.title ??
+                                {payment.serviceRequest?.title ??
                                   "Service Request"}
                               </p>
 
                               <p className="text-xs text-muted-foreground">
-                                {payment.serviceRequestId.slice(
-                                  0,
-                                  8,
-                                )}
+                                {payment.serviceRequestId.slice(0, 8)}
                                 ...
                               </p>
                             </div>
@@ -522,14 +424,12 @@ export default function AdminPayments() {
                           <td className="px-4 py-4">
                             <div>
                               <p className="font-medium">
-                                {payment.serviceRequest
-                                  ?.customer?.name ??
+                                {payment.serviceRequest?.customer?.name ??
                                   "N/A"}
                               </p>
 
                               <p className="text-xs text-muted-foreground">
-                                {payment.serviceRequest
-                                  ?.customer?.email ??
+                                {payment.serviceRequest?.customer?.email ??
                                   "N/A"}
                               </p>
                             </div>
@@ -538,36 +438,27 @@ export default function AdminPayments() {
                           <td className="px-4 py-4">
                             <div>
                               <p className="font-medium">
-                                {payment.serviceRequest
-                                  ?.technician?.name ??
+                                {payment.serviceRequest?.technician?.name ??
                                   "Not assigned"}
                               </p>
 
                               <p className="text-xs text-muted-foreground">
-                                {payment.serviceRequest
-                                  ?.technician?.email ??
+                                {payment.serviceRequest?.technician?.email ??
                                   ""}
                               </p>
                             </div>
                           </td>
 
                           <td className="px-4 py-4 font-semibold">
-                            {formatAmount(
-                              payment.amount,
-                              payment.currency,
-                            )}
+                            {formatAmount(payment.amount, payment.currency)}
                           </td>
 
                           <td className="px-4 py-4">
-                            <Badge variant="outline">
-                              {payment.method}
-                            </Badge>
+                            <Badge variant="outline">{payment.method}</Badge>
                           </td>
 
                           <td className="px-4 py-4">
-                            <Badge
-                              className={config.className}
-                            >
+                            <Badge className={config.className}>
                               <StatusIcon className="mr-1 size-3" />
                               {config.label}
                             </Badge>
@@ -586,33 +477,24 @@ export default function AdminPayments() {
               {/* Mobile Cards */}
               <div className="space-y-4 md:hidden">
                 {paginatedPayments.map((payment) => {
-                  const config =
-                    statusConfig[payment.status];
+                  const config = statusConfig[payment.status];
 
                   const StatusIcon = config.icon;
 
                   return (
-                    <div
-                      key={payment.id}
-                      className="rounded-lg border p-4"
-                    >
+                    <div key={payment.id} className="rounded-lg border p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <h3 className="truncate font-semibold">
-                            {payment.serviceRequest
-                              ?.title ??
-                              "Service Request"}
+                            {payment.serviceRequest?.title ?? "Service Request"}
                           </h3>
 
                           <p className="mt-1 text-xs text-muted-foreground">
-                            Payment ID:{" "}
-                            {payment.id.slice(0, 8)}...
+                            Payment ID: {payment.id.slice(0, 8)}...
                           </p>
                         </div>
 
-                        <Badge
-                          className={config.className}
-                        >
+                        <Badge className={config.className}>
                           <StatusIcon className="mr-1 size-3" />
                           {config.label}
                         </Badge>
@@ -625,9 +507,7 @@ export default function AdminPayments() {
                           </span>
 
                           <span className="text-right font-medium">
-                            {payment.serviceRequest
-                              ?.customer?.name ??
-                              "N/A"}
+                            {payment.serviceRequest?.customer?.name ?? "N/A"}
                           </span>
                         </div>
 
@@ -637,45 +517,31 @@ export default function AdminPayments() {
                           </span>
 
                           <span className="text-right font-medium">
-                            {payment.serviceRequest
-                              ?.technician?.name ??
+                            {payment.serviceRequest?.technician?.name ??
                               "Not assigned"}
                           </span>
                         </div>
 
                         <div className="flex justify-between gap-4">
-                          <span className="text-muted-foreground">
-                            Amount
-                          </span>
+                          <span className="text-muted-foreground">Amount</span>
 
                           <span className="font-semibold">
-                            {formatAmount(
-                              payment.amount,
-                              payment.currency,
-                            )}
+                            {formatAmount(payment.amount, payment.currency)}
                           </span>
                         </div>
 
                         <div className="flex justify-between gap-4">
-                          <span className="text-muted-foreground">
-                            Method
-                          </span>
+                          <span className="text-muted-foreground">Method</span>
 
-                          <Badge variant="outline">
-                            {payment.method}
-                          </Badge>
+                          <Badge variant="outline">{payment.method}</Badge>
                         </div>
 
                         <div className="flex justify-between gap-4">
-                          <span className="text-muted-foreground">
-                            Date
-                          </span>
+                          <span className="text-muted-foreground">Date</span>
 
                           <span className="flex items-center gap-1">
                             <CalendarDays className="size-3.5" />
-                            {formatDate(
-                              payment.createdAt,
-                            )}
+                            {formatDate(payment.createdAt)}
                           </span>
                         </div>
                       </div>
@@ -693,10 +559,7 @@ export default function AdminPayments() {
                     filteredPayments.length,
                   )}{" "}
                   to{" "}
-                  {Math.min(
-                    currentPage * PAGE_SIZE,
-                    filteredPayments.length,
-                  )}{" "}
+                  {Math.min(currentPage * PAGE_SIZE, filteredPayments.length)}{" "}
                   of {filteredPayments.length} payments
                 </p>
 
@@ -706,9 +569,7 @@ export default function AdminPayments() {
                     size="sm"
                     disabled={currentPage === 1}
                     onClick={() =>
-                      setCurrentPage((page) =>
-                        Math.max(1, page - 1),
-                      )
+                      setCurrentPage((page) => Math.max(1, page - 1))
                     }
                   >
                     Previous
@@ -723,12 +584,7 @@ export default function AdminPayments() {
                     size="sm"
                     disabled={currentPage === totalPages}
                     onClick={() =>
-                      setCurrentPage((page) =>
-                        Math.min(
-                          totalPages,
-                          page + 1,
-                        ),
-                      )
+                      setCurrentPage((page) => Math.min(totalPages, page + 1))
                     }
                   >
                     Next
@@ -742,4 +598,3 @@ export default function AdminPayments() {
     </div>
   );
 }
-

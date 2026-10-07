@@ -1,4 +1,3 @@
-
 import TechnicianPaymentHistory from "@/components/dashboard/technician/technician-payment-history";
 
 export default function TechnicianPaymentsPage() {
@@ -8,4 +7,3 @@ export default function TechnicianPaymentsPage() {
     </main>
   );
 }
-

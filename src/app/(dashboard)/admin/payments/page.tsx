@@ -1,4 +1,3 @@
-
 import AdminPayments from "@/components/dashboard/admin/admin-payments";
 
 export default function AdminPaymentsPage() {
