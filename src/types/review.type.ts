@@ -55,7 +55,7 @@ export const formatPrice = (value: string | number | null | undefined) => {
   return `৳${Number(value).toLocaleString("en-BD")}`;
 };
 
- export type CustomerReview = {
+export type CustomerReview = {
   id: string;
   rating: number;
   comment?: string | null;
@@ -86,4 +86,64 @@ export const formatPrice = (value: string | number | null | undefined) => {
     status: string;
     finalPrice?: string | number | null;
   } | null;
+};
+
+export type AdminReview = {
+  id: string;
+  rating: number;
+  comment?: string | null;
+  serviceRequestId: string;
+  reviewerId: string;
+  technicianId: string;
+  createdAt: string;
+  updatedAt: string;
+
+  reviewer?: {
+    id: string;
+    name: string;
+    email?: string | null;
+    phone?: string | null;
+    imageUrl?: string | null;
+  } | null;
+
+  technician?: {
+    id: string;
+    name: string;
+    email?: string | null;
+    phone?: string | null;
+    imageUrl?: string | null;
+    technicianProfile?: {
+      averageRating?: number;
+      experienceYears?: number;
+      totalJobs?: number;
+    } | null;
+  } | null;
+
+  serviceRequest?: {
+    id: string;
+    title: string;
+    status: string;
+    finalPrice?: string | number | null;
+  } | null;
+};
+
+export const getRatingLabel = (rating: number) => {
+  if (rating === 5) return "Excellent";
+  if (rating === 4) return "Very Good";
+  if (rating === 3) return "Good";
+  if (rating === 2) return "Fair";
+  return "Poor";
+};
+
+export const getStatusVariant = (status: string) => {
+  switch (status) {
+    case "COMPLETED":
+      return "default";
+    case "CANCELLED":
+      return "destructive";
+    case "IN_PROGRESS":
+      return "secondary";
+    default:
+      return "outline";
+  }
 };

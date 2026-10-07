@@ -13,12 +13,7 @@ import { useGetMyReviews } from "@/hooks";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CustomerReview, ReviewsResponse } from "@/types/review.type";
 import Image from "next/image";
@@ -27,10 +22,6 @@ import { formatDate } from "@/types";
 
 const PAGE_SIZE = 10;
 
-
-
-
-
 export default function CustomerReviews() {
   const [ratingFilter, setRatingFilter] = useState<
     "ALL" | "5" | "4" | "3" | "2" | "1"
@@ -38,15 +29,9 @@ export default function CustomerReviews() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    data: response,
-    isLoading,
-    isError,
-  } = useGetMyReviews();
+  const { data: response, isLoading, isError } = useGetMyReviews();
 
-  const apiResponse = response as
-    | ReviewsResponse
-    | undefined;
+  const apiResponse = response as ReviewsResponse | undefined;
 
   const reviews = apiResponse?.data ?? [];
 
@@ -55,19 +40,15 @@ export default function CustomerReviews() {
       return reviews;
     }
 
-    return reviews.filter(
-      (review) => review.rating === Number(ratingFilter),
-    );
+    return reviews.filter((review) => review.rating === Number(ratingFilter));
   }, [reviews, ratingFilter]);
 
   const totalReviews = reviews.length;
 
   const averageRating =
     totalReviews > 0
-      ? reviews.reduce(
-          (total, review) => total + review.rating,
-          0,
-        ) / totalReviews
+      ? reviews.reduce((total, review) => total + review.rating, 0) /
+        totalReviews
       : 0;
 
   const fiveStarReviews = reviews.filter(
@@ -78,19 +59,14 @@ export default function CustomerReviews() {
     (review) => review.rating === 4,
   ).length;
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredReviews.length / PAGE_SIZE),
-  );
+  const totalPages = Math.max(1, Math.ceil(filteredReviews.length / PAGE_SIZE));
 
   const paginatedReviews = filteredReviews.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE,
   );
 
-  const handleFilterChange = (
-    value: "ALL" | "5" | "4" | "3" | "2" | "1",
-  ) => {
+  const handleFilterChange = (value: "ALL" | "5" | "4" | "3" | "2" | "1") => {
     setRatingFilter(value);
     setCurrentPage(1);
   };
@@ -106,9 +82,7 @@ export default function CustomerReviews() {
           <div className="text-center">
             <MessageSquare className="mx-auto size-10 text-muted-foreground" />
 
-            <h3 className="mt-4 font-semibold">
-              Unable to load reviews
-            </h3>
+            <h3 className="mt-4 font-semibold">Unable to load reviews</h3>
 
             <p className="mt-1 text-sm text-muted-foreground">
               Please try again later.
@@ -123,9 +97,7 @@ export default function CustomerReviews() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          My Reviews
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight">My Reviews</h1>
 
         <p className="mt-1 text-sm text-muted-foreground">
           View the reviews you have given to technicians.
@@ -176,14 +148,8 @@ export default function CustomerReviews() {
               <Button
                 key={value}
                 size="sm"
-                variant={
-                  ratingFilter === value
-                    ? "default"
-                    : "outline"
-                }
-                onClick={() =>
-                  handleFilterChange(value)
-                }
+                variant={ratingFilter === value ? "default" : "outline"}
+                onClick={() => handleFilterChange(value)}
               >
                 {label}
               </Button>
@@ -199,9 +165,7 @@ export default function CustomerReviews() {
             <div className="text-center">
               <Star className="mx-auto size-12 text-muted-foreground" />
 
-              <h3 className="mt-4 text-lg font-semibold">
-                No reviews found
-              </h3>
+              <h3 className="mt-4 text-lg font-semibold">No reviews found</h3>
 
               <p className="mt-1 text-sm text-muted-foreground">
                 {ratingFilter === "ALL"
@@ -219,10 +183,7 @@ export default function CustomerReviews() {
 
           <CardContent className="space-y-4">
             {paginatedReviews.map((review) => (
-              <ReviewCard
-                key={review.id}
-                review={review}
-              />
+              <ReviewCard key={review.id} review={review} />
             ))}
           </CardContent>
         </Card>
@@ -232,13 +193,9 @@ export default function CustomerReviews() {
       {filteredReviews.length > PAGE_SIZE && (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing{" "}
-            {(currentPage - 1) * PAGE_SIZE + 1}-
-            {Math.min(
-              currentPage * PAGE_SIZE,
-              filteredReviews.length,
-            )}{" "}
-            of {filteredReviews.length} reviews
+            Showing {(currentPage - 1) * PAGE_SIZE + 1}-
+            {Math.min(currentPage * PAGE_SIZE, filteredReviews.length)} of{" "}
+            {filteredReviews.length} reviews
           </p>
 
           <div className="flex gap-2">
@@ -246,9 +203,7 @@ export default function CustomerReviews() {
               variant="outline"
               size="sm"
               disabled={currentPage === 1}
-              onClick={() =>
-                setCurrentPage((page) => page - 1)
-              }
+              onClick={() => setCurrentPage((page) => page - 1)}
             >
               Previous
             </Button>
@@ -257,9 +212,7 @@ export default function CustomerReviews() {
               variant="outline"
               size="sm"
               disabled={currentPage === totalPages}
-              onClick={() =>
-                setCurrentPage((page) => page + 1)
-              }
+              onClick={() => setCurrentPage((page) => page + 1)}
             >
               Next
             </Button>
@@ -270,11 +223,7 @@ export default function CustomerReviews() {
   );
 }
 
-function ReviewCard({
-  review,
-}: {
-  review: CustomerReview;
-}) {
+function ReviewCard({ review }: { review: CustomerReview }) {
   return (
     <div className="rounded-xl border p-4 sm:p-5">
       {/* Technician + Rating */}
@@ -318,9 +267,7 @@ function ReviewCard({
             />
           ))}
 
-          <span className="ml-1 text-sm font-medium">
-            {review.rating}/5
-          </span>
+          <span className="ml-1 text-sm font-medium">{review.rating}/5</span>
         </div>
       </div>
 
@@ -330,9 +277,7 @@ function ReviewCard({
           <div className="flex gap-2">
             <MessageSquare className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
 
-            <p className="text-sm leading-6">
-              {review.comment}
-            </p>
+            <p className="text-sm leading-6">{review.comment}</p>
           </div>
         </div>
       ) : (
@@ -347,31 +292,22 @@ function ReviewCard({
           <Wrench className="size-4 shrink-0 text-muted-foreground" />
 
           <div className="min-w-0">
-            <p className="text-xs text-muted-foreground">
-              Service
-            </p>
+            <p className="text-xs text-muted-foreground">Service</p>
 
             <p className="truncate text-sm font-medium">
-              {review.serviceRequest?.title ??
-                "Service Request"}
+              {review.serviceRequest?.title ?? "Service Request"}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          {review.serviceRequest?.finalPrice !==
-            null &&
-            review.serviceRequest?.finalPrice !==
-              undefined && (
+          {review.serviceRequest?.finalPrice !== null &&
+            review.serviceRequest?.finalPrice !== undefined && (
               <div>
-                <p className="text-xs text-muted-foreground">
-                  Price
-                </p>
+                <p className="text-xs text-muted-foreground">Price</p>
 
                 <p className="text-sm font-semibold">
-                  {formatPrice(
-                    review.serviceRequest.finalPrice,
-                  )}
+                  {formatPrice(review.serviceRequest.finalPrice)}
                 </p>
               </div>
             )}
@@ -407,13 +343,9 @@ function SummaryCard({
       <CardContent className="p-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-muted-foreground">
-              {title}
-            </p>
+            <p className="text-sm text-muted-foreground">{title}</p>
 
-            <p className="mt-2 text-2xl font-bold">
-              {value}
-            </p>
+            <p className="mt-2 text-2xl font-bold">{value}</p>
           </div>
 
           <div className="rounded-lg bg-primary/10 p-3">
@@ -452,11 +384,15 @@ function CustomerReviewsSkeleton() {
 
       <Card>
         <CardContent className="flex flex-wrap gap-2 p-4">
-          {["filter-1", "filter-2", "filter-3", "filter-4", "filter-5", "filter-6"].map((key) => (
-            <Skeleton
-              key={key}
-              className="h-9 w-24"
-            />
+          {[
+            "filter-1",
+            "filter-2",
+            "filter-3",
+            "filter-4",
+            "filter-5",
+            "filter-6",
+          ].map((key) => (
+            <Skeleton key={key} className="h-9 w-24" />
           ))}
         </CardContent>
       </Card>
@@ -467,32 +403,31 @@ function CustomerReviewsSkeleton() {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {["review-1", "review-2", "review-3", "review-4", "review-5"].map((key) => (
-            <div
-              key={key}
-              className="space-y-4 rounded-xl border p-5"
-            >
-              <div className="flex justify-between">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="size-11 rounded-full" />
+          {["review-1", "review-2", "review-3", "review-4", "review-5"].map(
+            (key) => (
+              <div key={key} className="space-y-4 rounded-xl border p-5">
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="size-11 rounded-full" />
 
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-28" />
-                    <Skeleton className="h-3 w-40" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-28" />
+                      <Skeleton className="h-3 w-40" />
+                    </div>
                   </div>
+
+                  <Skeleton className="h-5 w-24" />
                 </div>
 
-                <Skeleton className="h-5 w-24" />
-              </div>
+                <Skeleton className="h-16 w-full rounded-lg" />
 
-              <Skeleton className="h-16 w-full rounded-lg" />
-
-              <div className="flex justify-between">
-                <Skeleton className="h-4 w-40" />
-                <Skeleton className="h-4 w-24" />
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-40" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
               </div>
-            </div>
-          ))}
+            ),
+          )}
         </CardContent>
       </Card>
     </div>
