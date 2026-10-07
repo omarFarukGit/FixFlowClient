@@ -271,7 +271,7 @@ export default function TechnicianPaymentHistory() {
                           </td>
 
                           <td className="px-4 py-4 text-right">
-                            <Button asChild variant="outline" size="sm">
+                            <Button variant="outline" size="sm">
                               <Link
                                 href={`/technician/services/${payment.serviceRequestId}`}
                               >
@@ -345,7 +345,6 @@ export default function TechnicianPaymentHistory() {
                       </div>
 
                       <Button
-                        asChild
                         variant="outline"
                         size="sm"
                         className="mt-4 w-full"

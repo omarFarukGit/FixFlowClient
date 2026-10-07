@@ -23,34 +23,34 @@ export const technicianRoutes = [
         title: "Assigned Services",
         url: `${prefix}/services`,
       },
-      {
-        title: "Pending Requests",
-        url: `${prefix}/requests`,
-      },
+      // {
+      //   title: "Pending Requests",
+      //   url: `${prefix}/requests`,
+      // },
       {
         title: "Completed Services",
         url: `${prefix}/services/completed`,
       },
     ],
   },
-  {
-    title: "Availability",
-    url: "#",
-    items: [
-      {
-        title: "My Availability",
-        url: `${prefix}/availability`,
-      },
-    ],
-  },
+  // {
+  //   title: "Availability",
+  //   url: "#",
+  //   items: [
+  //     {
+  //       title: "My Availability",
+  //       url: `${prefix}/availability`,
+  //     },
+  //   ],
+  // },
   {
     title: "Earnings",
     url: "#",
     items: [
-      {
-        title: "Earnings",
-        url: `${prefix}/earnings`,
-      },
+      // {
+      //   title: "Earnings",
+      //   url: `${prefix}/earnings`,
+      // },
       {
         title: "Payment History",
         url: `${prefix}/payments`,

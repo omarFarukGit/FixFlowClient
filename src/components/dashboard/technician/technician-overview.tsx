@@ -211,9 +211,9 @@ export default function TechnicianOverview() {
             <Button variant="outline" className="mt-4">
               <Link
                 className="flex justify-center items-center gap-2"
-                href="/technician/earnings"
+                href="/technician/payments"
               >
-                View Earnings
+                View Payment History
                 <ArrowRight />
               </Link>
             </Button>
