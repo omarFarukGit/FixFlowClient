@@ -4,3 +4,4 @@ export * from "./review.hook";
 export * from "./admin.hook";
 export * from "./technician.hook";
 export * from "./payments.hook";
+export * from "./category.hook";
