@@ -77,11 +77,11 @@ export default function VerifyAccountForm() {
 
         toast.add({
           title: "Verification Successful",
-          description: "Welcome onboard",
+          description: "Plese login to your account",
           type: "success",
         });
 
-        router.push("/");
+        router.push("/login");
       },
 
       onError: (err) => {
