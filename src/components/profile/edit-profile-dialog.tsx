@@ -60,7 +60,7 @@ interface UserProfile {
 interface EditProfileDialogProps {
   user: UserProfile;
   isPending?: boolean;
-  onSubmit: (data: UpdateProfileFormValues) => void;
+  onSubmit: (data: UpdateProfileFormValues) => Promise<void>;
 }
 
 export default function EditProfileDialog({
@@ -83,8 +83,15 @@ export default function EditProfileDialog({
       onSubmit: updateProfileSchema,
     },
 
-    onSubmit: ({ value }) => {
-      onSubmit(value);
+    onSubmit: async ({ value }) => {
+      try {
+        await onSubmit(value);
+
+        // Close modal only after successful API update.
+        setOpen(false);
+      } catch {
+        // Keep the modal open if the API request fails.
+      }
     },
   });
 
@@ -102,7 +109,6 @@ export default function EditProfileDialog({
           Edit Profile
         </Button>
       </DialogTrigger>
-
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
@@ -115,6 +121,7 @@ export default function EditProfileDialog({
         <form
           onSubmit={(event) => {
             event.preventDefault();
+            event.stopPropagation();
             form.handleSubmit();
           }}
         >
@@ -215,7 +222,6 @@ export default function EditProfileDialog({
 
             {/* City + Area */}
             <div className="grid gap-4 sm:grid-cols-2">
-              {/* City */}
               <form.Field name="city">
                 {(field) => {
                   const isInvalid =
@@ -245,7 +251,6 @@ export default function EditProfileDialog({
                 }}
               </form.Field>
 
-              {/* Area */}
               <form.Field name="area">
                 {(field) => {
                   const isInvalid =

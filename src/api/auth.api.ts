@@ -30,3 +30,16 @@ export function getMe() {
 export function googleOAuth(payload: { idToken: string }) {
   return apiClient("/auth/google/callback", { method: "POST", body: payload });
 }
+
+export function updateMyProfileInfromation(payload: any) {
+  return apiClient("/users/me", {
+    method: "PATCH",
+    body: payload,
+  });
+}
+export function updateMyProfileImage(payload: any) {
+  return apiClient("/users/me/image", {
+    method: "PATCH",
+    body: payload,
+  });
+}

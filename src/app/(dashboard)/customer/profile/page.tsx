@@ -20,7 +20,7 @@ const user = {
 export default function ProfilePage() {
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
-      <UserProfile user={user} />
+      <UserProfile />
     </div>
   );
 }

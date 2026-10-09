@@ -2,6 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getMe,
   googleOAuth,
+  updateMyProfileImage,
+  updateMyProfileInfromation,
   userLogin,
   userLogout,
   userRegistation,
@@ -34,15 +36,28 @@ export function useLogout() {
   });
 }
 
+export function useGoogleOAuth() {
+  return useMutation({
+    mutationFn: googleOAuth,
+  });
+}
+
+export function useUpdateMyProfileInformation() {
+  return useMutation({
+    mutationFn: updateMyProfileInfromation,
+  });
+}
+
+export function useUpdateMyProfileImage() {
+  return useMutation({
+    mutationFn: updateMyProfileImage,
+  });
+}
+
 export function useGetMe() {
   return useQuery({
     queryKey: ["user"],
     queryFn: getMe,
     retry: false,
-  });
-}
-export function useGoogleOAuth() {
-  return useMutation({
-    mutationFn: googleOAuth,
   });
 }

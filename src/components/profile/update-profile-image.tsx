@@ -20,7 +20,7 @@ interface UpdateProfileImageProps {
   imageUrl: string | null;
   userName: string;
   isPending?: boolean;
-  onSubmit: (file: File) => void;
+  onSubmit: (file: File) => Promise<void>;
 }
 
 export default function UpdateProfileImage({
@@ -87,10 +87,24 @@ export default function UpdateProfileImage({
     }
   };
 
-  const handleSubmit = () => {
-    if (!file) return;
+  const handleSubmit = async () => {
+    if (!file || isPending) return;
 
-    onSubmit(file);
+    try {
+      await onSubmit(file);
+
+      // Upload successful হলে modal বন্ধ হবে
+      setOpen(false);
+
+      // Selected file reset
+      setFile(null);
+
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("Profile image upload failed:", error);
+    }
   };
 
   const handleOpenChange = (value: boolean) => {
