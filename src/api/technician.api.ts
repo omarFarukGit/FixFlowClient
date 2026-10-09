@@ -38,3 +38,19 @@ export const completeServiceRequest = async ({
     },
   });
 };
+
+export interface UpdateTechnicianInfoPayload {
+  bio: string;
+  experienceYears: number;
+  skills: string[];
+  hourlyRate: number;
+}
+
+export const updateTechnicainInfo = async (
+  payload: UpdateTechnicianInfoPayload,
+) => {
+  return apiClient("technicians/me/profile", {
+    method: "PATCH",
+    body: payload,
+  });
+};

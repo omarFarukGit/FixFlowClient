@@ -4,6 +4,7 @@ import {
   getMyServiceRequests,
   getServiceRequestById,
   startServiceRequest,
+  updateTechnicainInfo,
 } from "@/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -40,3 +41,10 @@ export const useCompleteServiceRequest = () => {
     mutationFn: completeServiceRequest,
   });
 };
+
+
+export const useUpdateTechnicainInfo=()=>{
+  return useMutation({
+    mutationFn: updateTechnicainInfo,
+  });
+}

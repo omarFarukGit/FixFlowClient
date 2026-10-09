@@ -204,3 +204,47 @@ export const statusConfig3 = {
     className: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300",
   },
 };
+
+export type TechnicianProfileData = {
+  id: string;
+  bio: string | null;
+  experienceYears: number;
+  hourlyRate: string | number;
+  averageRating: number;
+  isApproved: boolean;
+  skills: string[];
+  status: "AVAILABLE" | "BUSY" | "OFFLINE";
+  totalJobs: number;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+};
+
+export type UserProfileData = {
+  id: string;
+  name: string;
+  email: string;
+  authProvider: "CREDENTIAL" | "GOOGLE";
+  emailVerified: boolean;
+  phone: string | null;
+  address: string | null;
+  city: string | null;
+  area: string | null;
+  role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
+  status: "ACTIVE" | "INACTIVE" | "BLOCKED";
+  imageUrl: string | null;
+  imagePublicId?: string | null;
+  isDeleted?: boolean;
+  deletedAt?: string | null;
+  needPasswordChange?: boolean;
+  googleId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  technicianProfile: TechnicianProfileData | null;
+};
+
+export type ApiResponse<T> = {
+  success?: boolean;
+  message?: string;
+  data: T;
+};
