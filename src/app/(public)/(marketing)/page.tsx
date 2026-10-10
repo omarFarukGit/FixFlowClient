@@ -8,6 +8,7 @@ import ServicesSection from "@/components/home/services-section";
 import WhyChooseFixFlow from "@/components/home/why-choose-fixflow";
 
 export default function HomePage() {
+  
   return (
     <main>
       <HeroSection />
