@@ -25,10 +25,7 @@ type ErrorPageProps = {
   reset: () => void;
 };
 
-export default function ErrorPage({
-  error,
-  reset,
-}: ErrorPageProps) {
+export default function ErrorPage({ error, reset }: ErrorPageProps) {
   useEffect(() => {
     console.error("FixFlow application error:", error);
   }, [error]);
@@ -54,8 +51,8 @@ export default function ErrorPage({
           </CardTitle>
 
           <CardDescription className="max-w-sm text-sm leading-6">
-            We encountered an unexpected problem while processing
-            your request. Please try again.
+            We encountered an unexpected problem while processing your request.
+            Please try again.
           </CardDescription>
         </CardHeader>
 
@@ -68,19 +65,12 @@ export default function ErrorPage({
         </CardContent>
 
         <CardFooter className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button
-            onClick={reset}
-            className="w-full sm:w-auto cursor-pointer"
-          >
+          <Button onClick={reset} className="w-full sm:w-auto cursor-pointer">
             <RefreshCw className="mr-2 size-4" />
             Try Again
           </Button>
 
-          <Button
-            
-            variant="outline"
-            className="w-full sm:w-auto cursor-pointer"
-          >
+          <Button variant="outline" className="w-full sm:w-auto cursor-pointer">
             <Link className="flex justify-center items-center gap-2 " href="/">
               <Home className="mr-2 size-4" />
               Back to Home

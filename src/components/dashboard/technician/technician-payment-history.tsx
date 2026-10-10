@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { useGetPayments } from "@/hooks";
+import PaymentListSkeleton from "../customer/payment-skeletion";
 
 type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED" | "REFUNDED";
 
@@ -117,9 +118,7 @@ export default function TechnicianPaymentHistory() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[300px] items-center justify-center">
-        <Spinner />
-      </div>
+      <PaymentListSkeleton/>
     );
   }
 

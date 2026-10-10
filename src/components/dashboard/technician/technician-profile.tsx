@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -21,12 +20,7 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/components/ui/toast";
 
@@ -46,27 +40,17 @@ import TechnicianInfoDialog, {
 } from "@/components/profile/technician-info-dialog";
 import { ApiResponse, UserProfileData } from "@/types/technician.type";
 
-
-
 export default function TechnicianProfile() {
   const queryClient = useQueryClient();
 
-  const {
-    data: response,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useGetMe();
+  const { data: response, isLoading, isError, error, refetch } = useGetMe();
 
   const updateProfileMutation = useUpdateMyProfileInformation();
   const updateProfileImageMutation = useUpdateMyProfileImage();
   const updateTechnicianMutation = useUpdateTechnicainInfo();
 
   // User details come from data.
-  const user = (
-    response as ApiResponse<UserProfileData> | undefined
-  )?.data;
+  const user = (response as ApiResponse<UserProfileData> | undefined)?.data;
 
   // Technician details come from data.technicianProfile.
   const technician = user?.technicianProfile;
@@ -88,9 +72,7 @@ export default function TechnicianProfile() {
     } catch (err) {
       toast.add({
         description:
-          err instanceof Error
-            ? err.message
-            : "Failed to update profile",
+          err instanceof Error ? err.message : "Failed to update profile",
         type: "error",
       });
 
@@ -98,9 +80,7 @@ export default function TechnicianProfile() {
     }
   };
 
-  const handleUpdateProfileImage = async (
-    file: File,
-  ): Promise<void> => {
+  const handleUpdateProfileImage = async (file: File): Promise<void> => {
     try {
       const formData = new FormData();
       formData.append("image", file);
@@ -118,9 +98,7 @@ export default function TechnicianProfile() {
     } catch (err) {
       toast.add({
         description:
-          err instanceof Error
-            ? err.message
-            : "Failed to update profile image",
+          err instanceof Error ? err.message : "Failed to update profile image",
         type: "error",
       });
 
@@ -163,17 +141,15 @@ export default function TechnicianProfile() {
   if (isLoading) {
     return (
       <div className="grid gap-6 lg:grid-cols-2">
-        {["profile", "personal", "technician", "account"].map(
-          (section) => (
-            <Card key={section}>
-              <CardContent className="space-y-4 p-6">
-                <div className="h-6 w-40 animate-pulse rounded bg-muted" />
-                <div className="h-4 w-full animate-pulse rounded bg-muted" />
-                <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
-              </CardContent>
-            </Card>
-          ),
-        )}
+        {["profile", "personal", "technician", "account"].map((section) => (
+          <Card key={section}>
+            <CardContent className="space-y-4 p-6">
+              <div className="h-6 w-40 animate-pulse rounded bg-muted" />
+              <div className="h-4 w-full animate-pulse rounded bg-muted" />
+              <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
+            </CardContent>
+          </Card>
+        ))}
       </div>
     );
   }
@@ -182,20 +158,13 @@ export default function TechnicianProfile() {
     return (
       <Card>
         <CardContent className="flex flex-col items-center gap-3 p-8 text-center">
-          <p className="font-medium">
-            Unable to load your profile.
-          </p>
+          <p className="font-medium">Unable to load your profile.</p>
 
           <p className="text-sm text-muted-foreground">
-            {error instanceof Error
-              ? error.message
-              : "Please try again."}
+            {error instanceof Error ? error.message : "Please try again."}
           </p>
 
-          <Button
-            onClick={() => refetch()}
-            variant="outline"
-          >
+          <Button onClick={() => refetch()} variant="outline">
             Try Again
           </Button>
         </CardContent>
@@ -220,9 +189,7 @@ export default function TechnicianProfile() {
   const joinedDate = formatDate(user.createdAt);
   const updatedDate = formatDate(user.updatedAt);
 
-  const location = [user.area, user.city]
-    .filter(Boolean)
-    .join(", ");
+  const location = [user.area, user.city].filter(Boolean).join(", ");
 
   const initials =
     user.name
@@ -243,15 +210,11 @@ export default function TechnicianProfile() {
 
   const hourlyRate =
     technician?.hourlyRate != null
-      ? `৳${Number(technician.hourlyRate).toLocaleString(
-          "en-BD",
-        )} / hour`
+      ? `৳${Number(technician.hourlyRate).toLocaleString("en-BD")} / hour`
       : "Not provided";
 
   const availabilityVariant =
-    technician?.status === "AVAILABLE"
-      ? "default"
-      : "secondary";
+    technician?.status === "AVAILABLE" ? "default" : "secondary";
 
   return (
     <div className="space-y-6">
@@ -294,16 +257,10 @@ export default function TechnicianProfile() {
                   {user.name}
                 </h1>
 
-                <Badge variant="secondary">
-                  {user.role}
-                </Badge>
+                <Badge variant="secondary">{user.role}</Badge>
 
                 <Badge
-                  variant={
-                    user.status === "ACTIVE"
-                      ? "default"
-                      : "secondary"
-                  }
+                  variant={user.status === "ACTIVE" ? "default" : "secondary"}
                 >
                   {user.status === "ACTIVE" && (
                     <CheckCircle2 className="mr-1 h-3.5 w-3.5" />
@@ -313,11 +270,7 @@ export default function TechnicianProfile() {
 
                 {technician && (
                   <Badge
-                    variant={
-                      technician.isApproved
-                        ? "default"
-                        : "secondary"
-                    }
+                    variant={technician.isApproved ? "default" : "secondary"}
                   >
                     {technician.isApproved
                       ? "Approved Technician"
@@ -360,11 +313,7 @@ export default function TechnicianProfile() {
           </CardHeader>
 
           <CardContent className="space-y-5">
-            <ProfileItem
-              icon={UserRound}
-              label="Full Name"
-              value={user.name}
-            />
+            <ProfileItem icon={UserRound} label="Full Name" value={user.name} />
 
             <Separator />
 
@@ -446,9 +395,7 @@ export default function TechnicianProfile() {
             {!technician ? (
               <div className="rounded-lg border border-dashed p-6 text-center">
                 <Wrench className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-                <p className="font-medium">
-                  Technician profile not found
-                </p>
+                <p className="font-medium">Technician profile not found</p>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Technician information is not available for this account.
                 </p>
@@ -467,9 +414,7 @@ export default function TechnicianProfile() {
                   icon={Clock}
                   label="Experience"
                   value={`${technician.experienceYears} ${
-                    technician.experienceYears === 1
-                      ? "year"
-                      : "years"
+                    technician.experienceYears === 1 ? "year" : "years"
                   }`}
                 />
 
@@ -486,9 +431,9 @@ export default function TechnicianProfile() {
                 <ProfileItem
                   icon={Star}
                   label="Average Rating"
-                  value={`${Number(
-                    technician.averageRating ?? 0,
-                  ).toFixed(1)} / 5`}
+                  value={`${Number(technician.averageRating ?? 0).toFixed(
+                    1,
+                  )} / 5`}
                 />
 
                 <Separator />
@@ -505,9 +450,7 @@ export default function TechnicianProfile() {
                   icon={ShieldCheck}
                   label="Approval Status"
                   value={
-                    technician.isApproved
-                      ? "Approved"
-                      : "Pending Approval"
+                    technician.isApproved ? "Approved" : "Pending Approval"
                   }
                 />
 
@@ -588,9 +531,7 @@ export default function TechnicianProfile() {
             <ProfileItem
               icon={Mail}
               label="Email Verification"
-              value={
-                user.emailVerified ? "Verified" : "Not verified"
-              }
+              value={user.emailVerified ? "Verified" : "Not verified"}
             />
 
             <Separator />
@@ -640,14 +581,10 @@ export default function TechnicianProfile() {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className="font-medium">
-                    Default Service Location
-                  </p>
+                  <p className="font-medium">Default Service Location</p>
 
                   <p className="mt-1 break-words text-sm text-muted-foreground">
-                    {location ||
-                      user.address ||
-                      "No service location added"}
+                    {location || user.address || "No service location added"}
                   </p>
 
                   {user.address && (
@@ -672,12 +609,7 @@ type ProfileItemProps = {
   verified?: boolean;
 };
 
-function ProfileItem({
-  icon: Icon,
-  label,
-  value,
-  verified,
-}: ProfileItemProps) {
+function ProfileItem({ icon: Icon, label, value, verified }: ProfileItemProps) {
   return (
     <div className="flex items-start gap-3">
       <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
@@ -690,9 +622,7 @@ function ProfileItem({
         </p>
 
         <div className="mt-1 flex flex-wrap items-center gap-2">
-          <p className="break-words text-sm font-medium">
-            {value}
-          </p>
+          <p className="break-words text-sm font-medium">{value}</p>
 
           {verified && (
             <Badge variant="outline" className="gap-1 text-xs">

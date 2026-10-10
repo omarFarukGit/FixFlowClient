@@ -42,9 +42,8 @@ export const useCompleteServiceRequest = () => {
   });
 };
 
-
-export const useUpdateTechnicainInfo=()=>{
+export const useUpdateTechnicainInfo = () => {
   return useMutation({
     mutationFn: updateTechnicainInfo,
   });
-}
+};

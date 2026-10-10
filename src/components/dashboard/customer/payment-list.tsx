@@ -16,59 +16,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ReviewModal from "./review-modal";
 import { useState } from "react";
+import PaymentListSkeleton from "./payment-skeletion";
+import { IPayment, statusConfig } from "@/types/payment.type";
 
-type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED" | "REFUNDED";
 
-type PaymentMethod = "STRIPE";
-
-interface IPayment {
-  id: string;
-  amount: string;
-  currency: string;
-  status: PaymentStatus;
-  method: PaymentMethod;
-  transactionId?: string;
-  stripeSessionId?: string;
-  serviceRequestId: string;
-  createdAt: string;
-  updatedAt: string;
-
-  serviceRequest: {
-    id: string;
-    title: string;
-    status: string;
-    finalPrice: string;
-  };
-}
-
-const statusConfig: Record<
-  PaymentStatus,
-  {
-    label: string;
-    variant: "default" | "secondary" | "destructive";
-  }
-> = {
-  PAID: {
-    label: "Paid",
-    variant: "default",
-  },
-  PENDING: {
-    label: "Pending",
-    variant: "secondary",
-  },
-  FAILED: {
-    label: "Failed",
-    variant: "destructive",
-  },
-  CANCELLED: {
-    label: "Cancelled",
-    variant: "destructive",
-  },
-  REFUNDED: {
-    label: "Refunded",
-    variant: "secondary",
-  },
-};
 
 export default function PaymentList() {
   const { data: paymentsResponse, isLoading, error } = useGetPayments();
@@ -246,36 +197,4 @@ function PaymentInfo({
   );
 }
 
-function PaymentListSkeleton() {
-  return (
-    <div className="space-y-4">
-      {["payment-1", "payment-2", "payment-3"].map((id) => (
-        <Card key={id}>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="space-y-2">
-                <Skeleton className="h-5 w-48" />
-                <Skeleton className="h-3 w-24" />
-              </div>
 
-              <Skeleton className="h-6 w-16" />
-            </div>
-          </CardHeader>
-
-          <CardContent>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {["a", "b", "c", "d"].map((item) => (
-                <div key={item} className="space-y-2">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-4 w-28" />
-                </div>
-              ))}
-            </div>
-
-            <Skeleton className="mt-5 h-12 w-full" />
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
-}

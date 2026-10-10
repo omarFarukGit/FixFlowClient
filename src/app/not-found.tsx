@@ -1,11 +1,5 @@
 import Link from "next/link";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Home,
-  SearchX,
-  Wrench,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Home, SearchX, Wrench } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,10 +17,7 @@ export default function NotFoundPage() {
       <Card className="w-full max-w-lg border-border shadow-lg">
         <CardHeader className="flex flex-col justify-center  items-center text-center ">
           <div className="mb-4 flex size-24 items-center justify-center rounded-2xl bg-primary/10">
-            <SearchX
-              className="size-12 text-primary"
-              aria-hidden="true"
-            />
+            <SearchX className="size-12 text-primary" aria-hidden="true" />
           </div>
 
           <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-primary">
@@ -38,22 +29,17 @@ export default function NotFoundPage() {
             404
           </p>
 
-          <CardTitle className="text-2xl sm:text-3xl">
-            Page Not Found
-          </CardTitle>
+          <CardTitle className="text-2xl sm:text-3xl">Page Not Found</CardTitle>
 
           <CardDescription className="max-w-sm text-sm leading-6">
-            The page you are looking for may have been moved,
-            deleted, or does not exist. Let&apos;s get you back
-            on track.
+            The page you are looking for may have been moved, deleted, or does
+            not exist. Let&apos;s get you back on track.
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <div className="rounded-lg border border-border bg-muted/40 p-4 text-center">
-            <p className="text-sm font-medium">
-              Need a home service?
-            </p>
+            <p className="text-sm font-medium">Need a home service?</p>
             <p className="mt-1 text-sm text-muted-foreground">
               Return to FixFlow and explore our services.
             </p>
@@ -61,7 +47,7 @@ export default function NotFoundPage() {
         </CardContent>
 
         <CardFooter className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button  className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto">
             <Link className=" flex justify-center items-center gap-2" href="/">
               <Home className="mr-2 size-4" />
               Go to Homepage
@@ -69,13 +55,8 @@ export default function NotFoundPage() {
             </Link>
           </Button>
 
-          <Button
-            variant="outline"
-            className="w-full sm:w-auto"
-          >
-            <Link href="/services">
-              Explore Services
-            </Link>
+          <Button variant="outline" className="w-full sm:w-auto">
+            <Link href="/services">Explore Services</Link>
           </Button>
         </CardFooter>
       </Card>

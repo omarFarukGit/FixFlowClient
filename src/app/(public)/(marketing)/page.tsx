@@ -8,25 +8,19 @@ import ServicesSection from "@/components/home/services-section";
 import WhyChooseFixFlow from "@/components/home/why-choose-fixflow";
 
 export default function HomePage() {
-  
   return (
     <main>
       <HeroSection />
 
-      {/* Services */}
       <ServicesSection />
-      {/* How It Works */}
       <HowFixFlowWorks />
-      {/* Why Choose FixFlow */}
       <WhyChooseFixFlow />
 
       <HowItWorksUsers />
 
       <ServiceWorkflow />
-
-      {/* Reviews */}
       <CustomerReviews />
-      {/* CTA */}
+
       <CtaSection />
     </main>
   );
