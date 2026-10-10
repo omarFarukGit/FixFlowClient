@@ -27,9 +27,11 @@ import { toast } from "@/components/ui/toast";
 import { useCreateServiceRequest, useGetCategories } from "@/hooks";
 import { CreateServiceRequestPayload, ICategory } from "@/types/service.type";
 import { CreateServiceRequestFormSchema } from "@/validation/service-request.validation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function CreateServiceRequestForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { data: categoriesResponse, isLoading: categoriesLoading } =
     useGetCategories();
@@ -82,6 +84,7 @@ export function CreateServiceRequestForm() {
                 "Your service request has been submitted successfully.",
               type: "success",
             });
+            queryClient.removeQueries({ queryKey: ["service-requests"] });
 
             router.push("/customer/service-requests");
           }
