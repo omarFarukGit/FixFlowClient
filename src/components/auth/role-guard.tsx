@@ -16,7 +16,7 @@ export default async function RoleGuard({ children, roles }: IProps) {
     redirect("/login");
   }
 
-  if (!roles.includes(user.role)) {
+  if (!roles.includes(user.data.role)) {
     return <AccessDenied />;
   }
 

@@ -1,40 +1,27 @@
-import "server-only";
+"use server";
 
 import { cookies } from "next/headers";
-import type { UserRole } from "@/types/user.type";
 
-interface CurrentUser {
-  id: string;
-  role: UserRole;
-}
-
-interface MeResponse {
-  success: boolean;
-  data: CurrentUser;
-}
-
-export async function getCurrentUser(): Promise<CurrentUser | null> {
+export const getCurrentUser = async () => {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
+  const accessToken = cookieStore.get("accessToken")?.value as string;
 
-  if (!accessToken) return null;
+  const res = await fetch(`${process.env.BACKEND_URL}/users/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      //   Authorization: accessToken,
+      Cookie: `accessToken=${accessToken}`,
+    },
+    cache: "no-cache",
+    // next: {
+    //   revalidate: 60 * 60 * 24,
+    //   tags: ["my-profile"],
+    // },
+  });
 
-  try {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/users/me`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      cache: "no-store",
-    });
+  const result = await res.json();
+  console.log(result);
 
-    if (!response.ok) return null;
-
-    const result = (await response.json()) as MeResponse;
-
-    if (!result.success || !result.data?.role) return null;
-
-    return result.data;
-  } catch {
-    return null;
-  }
-}
+  return result;
+};

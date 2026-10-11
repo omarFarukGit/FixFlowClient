@@ -48,10 +48,7 @@ export default function ServiceCategoryGrid() {
   const paginatedCategories = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 
-    return filteredCategories.slice(
-      startIndex,
-      startIndex + ITEMS_PER_PAGE,
-    );
+    return filteredCategories.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [filteredCategories, currentPage]);
 
   const startItem =
@@ -76,7 +73,16 @@ export default function ServiceCategoryGrid() {
           <div className="mb-8 h-11 w-full max-w-md animate-pulse rounded-lg bg-muted" />
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {["category-skeleton-1", "category-skeleton-2", "category-skeleton-3", "category-skeleton-4", "category-skeleton-5", "category-skeleton-6", "category-skeleton-7", "category-skeleton-8"].map((key) => (
+            {[
+              "category-skeleton-1",
+              "category-skeleton-2",
+              "category-skeleton-3",
+              "category-skeleton-4",
+              "category-skeleton-5",
+              "category-skeleton-6",
+              "category-skeleton-7",
+              "category-skeleton-8",
+            ].map((key) => (
               <Card key={key} className="overflow-hidden">
                 <div className="aspect-[16/9] animate-pulse bg-muted" />
                 <CardContent className="p-5">
@@ -280,9 +286,7 @@ export default function ServiceCategoryGrid() {
                     variant="outline"
                     size="icon"
                     onClick={() =>
-                      setCurrentPage((page) =>
-                        Math.min(totalPages, page + 1),
-                      )
+                      setCurrentPage((page) => Math.min(totalPages, page + 1))
                     }
                     disabled={currentPage === totalPages}
                     aria-label="Next page"

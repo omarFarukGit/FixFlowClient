@@ -4,7 +4,6 @@ import ServicesCta from "@/components/services/services-cta";
 export default function ServicesPage() {
   return (
     <main>
-
       <ServiceCategoryGrid />
 
       <ServicesCta />

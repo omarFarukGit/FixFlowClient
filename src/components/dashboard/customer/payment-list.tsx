@@ -19,8 +19,6 @@ import { useState } from "react";
 import PaymentListSkeleton from "./payment-skeletion";
 import { IPayment, statusConfig } from "@/types/payment.type";
 
-
-
 export default function PaymentList() {
   const { data: paymentsResponse, isLoading, error } = useGetPayments();
 
@@ -196,5 +194,3 @@ function PaymentInfo({
     </div>
   );
 }
-
-

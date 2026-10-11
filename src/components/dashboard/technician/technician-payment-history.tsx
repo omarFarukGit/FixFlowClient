@@ -117,9 +117,7 @@ export default function TechnicianPaymentHistory() {
     .reduce((total, payment) => total + Number(payment.amount || 0), 0);
 
   if (isLoading) {
-    return (
-      <PaymentListSkeleton/>
-    );
+    return <PaymentListSkeleton />;
   }
 
   if (isError) {
