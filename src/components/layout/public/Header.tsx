@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "./ModeToggle";
-import apiClient from "@/lib/apiClient";
+import { logout } from "@/services/logout";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
@@ -19,13 +19,14 @@ const navItems = [
 ];
 export function Header() {
   const { data: user, isLoading } = useGetMe();
-const { mutateAsync: logout, isPending: logoutPending } = useLogout();
+const { mutateAsync: logouts, isPending: logoutPending } = useLogout();
 const queryClient = useQueryClient();
 const router = useRouter();
 
 const handleLogout = async () => {
   try {
     await logout();
+    
 
     queryClient.clear();
 
