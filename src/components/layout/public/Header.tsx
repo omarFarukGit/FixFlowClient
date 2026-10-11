@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "./ModeToggle";
+import apiClient from "@/lib/apiClient";
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
@@ -18,25 +19,31 @@ const navItems = [
 ];
 export function Header() {
   const { data: user, isLoading } = useGetMe();
-  const { mutate: logout, isPending: logoutPending } = useLogout();
-  const queryClient = useQueryClient();
-  const router = useRouter();
-  const handleLogout = () => {
-    logout(undefined, {
-      onSuccess: () => {
-        toast.add({ title: "Logged out successfully" });
-        queryClient.removeQueries({ queryKey: ["user"] });
-        router.push("/login");
-      },
-      onError: () => {
-        toast.add({
-          title: "Logout failed",
-          description: "Please try again.",
-          type: "error",
-        });
-      },
+const { mutateAsync: logout, isPending: logoutPending } = useLogout();
+const queryClient = useQueryClient();
+const router = useRouter();
+
+const handleLogout = async () => {
+  try {
+    await logout();
+
+    queryClient.clear();
+
+    toast.add({
+      description:"Logged out successfully!",
+      type:'success'
     });
-  };
+
+    router.replace("/login");
+    router.refresh();
+  } catch (error) {
+    console.error("Logout failed:", error);
+    toast.add({
+      description:"Failed to log out. Please try again.",
+      type:'error'
+    });
+  }
+};
   const getDashboardLink = () => {
     if (!user) return "/customer";
     const role = user.data?.role;
