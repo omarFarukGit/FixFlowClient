@@ -42,7 +42,7 @@ export async function loginAction(payload: LoginPayload) {
   cookieStore.set("accessToken", accessToken, {
     httpOnly: true,
     secure: true,
-    sameSite: "lax",
+    sameSite: "none",
     path: "/",
     maxAge: 60 * 60 * 24,
   });
@@ -50,7 +50,7 @@ export async function loginAction(payload: LoginPayload) {
   cookieStore.set("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: "lax",
+    sameSite: "none",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
   });
