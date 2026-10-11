@@ -3,10 +3,9 @@
 import { cookies } from "next/headers";
 import { revalidateTag } from "next/cache";
 
-export const logout = async () => {
+export async function logoutAction() {
   const cookieStore = await cookies();
 
-  console.log(cookieStore, "cookie store");
   cookieStore.delete("accessToken");
   cookieStore.delete("refreshToken");
 
@@ -14,6 +13,6 @@ export const logout = async () => {
 
   return {
     success: true,
-    message: "Logout successful",
+    message: "Logged out successfully",
   };
-};
+}

@@ -69,37 +69,41 @@ export function LoginForm({
     },
 
     onSubmit: ({ value }) => {
-      const loginData = {
-        email: value.email,
-        password: value.password,
-      };
-
-      login(loginData, {
-        onSuccess: (res) => {
-          if (res.success) {
+      login(
+        {
+          email: value.email,
+          password: value.password,
+        },
+        {
+          onSuccess: (res) => {
             toast.add({
               title: "Login Success",
               description: "Welcome back",
               type: "success",
             });
 
-            const role = res.data?.user?.role;
-            console.log(role);
+            const role = res.data.user.role;
 
-            if (role === "ADMIN") router.push("/admin");
-            else if (role === "TECHNICIAN") router.push("/technician");
-            else if (role === "CUSTOMER") router.push("/customer");
-          }
-        },
+            if (role === "ADMIN") {
+              router.replace("/admin");
+            } else if (role === "TECHNICIAN") {
+              router.replace("/technician");
+            } else if (role === "CUSTOMER") {
+              router.replace("/customer");
+            }
 
-        onError: () => {
-          toast.add({
-            title: "Login Failed",
-            description: "Invalid email or password",
-            type: "error",
-          });
+            router.refresh();
+          },
+
+          onError: (error) => {
+            toast.add({
+              title: "Login Failed",
+              description: error.message || "Invalid email or password",
+              type: "error",
+            });
+          },
         },
-      });
+      );
     },
   });
 
