@@ -69,41 +69,37 @@ export function LoginForm({
     },
 
     onSubmit: ({ value }) => {
-      login(
-        {
-          email: value.email,
-          password: value.password,
-        },
-        {
-          onSuccess: (res) => {
+      const loginData = {
+        email: value.email,
+        password: value.password,
+      };
+
+      login(loginData, {
+        onSuccess: (res) => {
+          if (res.success) {
             toast.add({
               title: "Login Success",
               description: "Welcome back",
               type: "success",
             });
 
-            const role = res.data.user.role;
+            const role = res.data?.user?.role;
+            console.log(role);
 
-            if (role === "ADMIN") {
-              router.replace("/admin");
-            } else if (role === "TECHNICIAN") {
-              router.replace("/technician");
-            } else if (role === "CUSTOMER") {
-              router.replace("/customer");
-            }
-
-            router.refresh();
-          },
-
-          onError: (error) => {
-            toast.add({
-              title: "Login Failed",
-              description: error.message || "Invalid email or password",
-              type: "error",
-            });
-          },
+            if (role === "ADMIN") router.push("/admin");
+            else if (role === "TECHNICIAN") router.push("/technician");
+            else if (role === "CUSTOMER") router.push("/customer");
+          }
         },
-      );
+
+        onError: () => {
+          toast.add({
+            title: "Login Failed",
+            description: "Invalid email or password",
+            type: "error",
+          });
+        },
+      });
     },
   });
 
@@ -114,7 +110,6 @@ export function LoginForm({
     form.setFieldValue("password", credential.password);
 
     toast.add({
-      title: `${credential.label} credentials loaded`,
       description: "Click Login to continue",
       type: "success",
     });

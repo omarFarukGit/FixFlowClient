@@ -9,12 +9,11 @@ import {
   userRegistation,
   verifyAccount,
 } from "@/api";
-import { loginAction } from "@/app/action/loginAction";
 import { logoutAction } from "@/app/action/logOutAction";
 
 export function useLogin() {
   return useMutation({
-    mutationFn: loginAction,
+    mutationFn: userLogin,
   });
 }
 export function useRegistration() {
