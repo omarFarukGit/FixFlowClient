@@ -32,7 +32,7 @@ export function useVerifyAccount() {
 
 export function useLogout() {
   return useMutation({
-    mutationFn: logoutAction,
+    mutationFn: userLogout,
   });
 }
 
