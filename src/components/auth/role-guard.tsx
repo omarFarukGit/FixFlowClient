@@ -1,7 +1,9 @@
-import type { ReactNode } from "react";
-import { redirect } from "next/navigation";
-import type { UserRole } from "@/types/user.type";
-import { getCurrentUser } from "@/lib/auth/get-current-user";
+"use client";
+import React, { ReactNode, useEffect } from "react";
+import { useGetMe } from "@/hooks";
+import { useRouter } from "next/navigation";
+import AuthLoading from "./auth-loading";
+import { UserRole } from "@/types/user.type";
 import AccessDenied from "./acces-denied";
 
 interface IProps {
@@ -9,16 +11,31 @@ interface IProps {
   roles: UserRole[];
 }
 
-export default async function RoleGuard({ children, roles }: IProps) {
-  const user = await getCurrentUser();
+export default function RoleGuard({ children, roles }: IProps) {
+  const { data, isPending, isError } = useGetMe();
+  const router = useRouter();
+  const user = data?.data;
 
-  if (!user) {
-    redirect("/login");
+  const isAuthorized = !!user && roles.includes(user.role);
+
+  useEffect(() => {
+    if (isPending) {
+      return;
+    }
+    if (isError || !user) {
+      router.replace("/login");
+    }
+  }, [isPending, isError, user, router.replace]);
+
+  if (isPending) {
+    return <AuthLoading lavel="Vefifying Account" />;
+  }
+  if (isError || !user) {
+    return <AuthLoading lavel="Redirecting..." />;
+  }
+  if (isAuthorized) {
+    return <>{children}</>;
   }
 
-  if (!roles.includes(user.data.role)) {
-    return <AccessDenied />;
-  }
-
-  return <>{children}</>;
+  return <AccessDenied />;
 }
