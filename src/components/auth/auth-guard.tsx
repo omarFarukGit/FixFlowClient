@@ -1,28 +1,13 @@
-"use client";
-import React, { ReactNode, useEffect } from "react";
-import { useGetMe } from "@/hooks";
-import { useRouter } from "next/navigation";
-import AuthLoading from "./auth-loading";
+import type { ReactNode } from "react";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth/get-current-user";
 
-export default function AuthGuard({ children }: { children: ReactNode }) {
-  const { data, isPending, isError } = useGetMe();
-  const router = useRouter();
-  const user = data?.data;
-  useEffect(() => {
-    if (isPending) {
-      return;
-    }
-    if (isError || !user) {
-      router.replace("/login");
-    }
-  }, [isPending, isError, user, router.replace]);
+export default async function AuthGuard({ children }: { children: ReactNode }) {
+  const user = await getCurrentUser();
 
-  if (isPending) {
-    return <AuthLoading lavel="Vefifying Account" />;
-  }
-  if (isError || !user) {
-    return <AuthLoading lavel="Redirecting..." />;
+  if (!user) {
+    redirect("/login");
   }
 
-  return <div>{children}</div>;
+  return <>{children}</>;
 }
