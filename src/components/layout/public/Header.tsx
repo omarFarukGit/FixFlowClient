@@ -164,7 +164,7 @@ export function Header() {
           {isLoading ? null : !user ? (
             <Button
               onClick={() => router.push("/login")}
-              className="hidden md:inline-flex"
+              className="hidden md:inline-flex cursor-pointer"
             >
               Login
             </Button>
@@ -182,7 +182,7 @@ export function Header() {
                 onClick={handleLogout}
                 disabled={logoutPending}
                 variant="outline"
-                className=" border-border/70 bg-background/50 transition-colors hover:bg-accent "
+                className=" border-border/70 bg-background/50 transition-colors hover:bg-accent cursor-pointer "
               >
                 {logoutPending ? "Logging out..." : "Logout"}
               </Button>

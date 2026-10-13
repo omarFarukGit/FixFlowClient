@@ -20,7 +20,7 @@ export default function DashboardShell({
     <SidebarProvider>
       <DashboardSidebar role={role} />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
+        <header className=" flex z-50 sticky top-0 h-16 shrink-0 items-center justify-between gap-2 border-b px-4  bg-background/70 backdrop-blur-xl">
           <SidebarTrigger className="-ml-1 cursor-pointer" />
           <Logout />
         </header>

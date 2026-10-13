@@ -53,7 +53,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const { mutate: login, isPending: loginPending } = useLogin();
-  const { mutate: googleLogin } = useGoogleOAuth();
+  const { mutate: googleOAuth, isPending } = useGoogleOAuth();
   const [activeDemo, setActiveDemo] = useState<DemoRole>("customer");
 
   const router = useRouter();
@@ -122,20 +122,26 @@ export function LoginForm({
         title: "Google OAuth Failed",
         type: "error",
       });
-
       return;
     }
 
-    googleLogin(
+    googleOAuth(
       { idToken },
       {
         onSuccess: () => {
           toast.add({
-            title: "Google login successfully",
-            type: "success",
+            title: "Google login successful",
           });
 
-          router.push("/");
+          router.push("/customer");
+          router.refresh();
+        },
+        onError: () => {
+          toast.add({
+            title: "Google login failed",
+            description: "Please try again.",
+            type: "error",
+          });
         },
       },
     );
@@ -285,7 +291,12 @@ export function LoginForm({
                 {/* Google */}
                 <GoogleLogin
                   onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleError}
+                  onError={() => {
+                    toast.add({
+                      title: "Google authentication failed",
+                      type: "error",
+                    });
+                  }}
                 />
 
                 <FieldDescription className="text-center">

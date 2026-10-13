@@ -27,8 +27,12 @@ export function userLogout() {
 export function getMe() {
   return apiClient("/users/me");
 }
+
 export function googleOAuth(payload: { idToken: string }) {
-  return apiClient("/auth/google/callback", { method: "POST", body: payload });
+  return apiClient("/auth/google/callback", {
+    method: "POST",
+    body: payload,
+  });
 }
 
 export function updateMyProfileInfromation(payload: any) {
