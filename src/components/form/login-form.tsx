@@ -116,6 +116,7 @@ export function LoginForm({
 
   const handleGoogleSuccess = (credentialResponse: { credential?: string }) => {
     const idToken = credentialResponse.credential;
+    console.log(idToken);
 
     if (!idToken) {
       toast.add({
@@ -133,13 +134,14 @@ export function LoginForm({
             title: "Google login successful",
           });
 
-          router.push("/customer");
+          router.replace("/customer");
           router.refresh();
         },
-        onError: () => {
+        onError: (error) => {
+          console.error("Google login failed:", error);
+
           toast.add({
             title: "Google login failed",
-            description: "Please try again.",
             type: "error",
           });
         },
