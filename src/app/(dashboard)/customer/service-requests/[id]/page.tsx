@@ -1,8 +1,7 @@
 import CustomerServiceDetails from "@/components/dashboard/customer/customer-service-details";
 
-import { createElement } from "react";
 
-interface TechnicianServiceDetailsPageProps {
+interface ServiceDetailsPageProps {
   params: Promise<{
     id: string;
   }>;
@@ -10,12 +9,8 @@ interface TechnicianServiceDetailsPageProps {
 
 export default async function TechnicianServiceDetailsPage({
   params,
-}: TechnicianServiceDetailsPageProps) {
+}: ServiceDetailsPageProps) {
   const { id } = await params;
 
-  return createElement(
-    "main",
-    { className: "space-y-6 p-4 sm:p-6 lg:p-8" },
-    createElement(CustomerServiceDetails, { serviceRequestId: id }),
-  );
+  return <CustomerServiceDetails serviceRequestId={id}/>
 }

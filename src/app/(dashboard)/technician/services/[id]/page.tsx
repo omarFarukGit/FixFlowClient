@@ -1,6 +1,6 @@
 import TechnicianServiceDetails from "@/components/dashboard/technician/technician-service-details";
 
-interface TechnicianServiceDetailsPageProps {
+interface ServiceDetailsPageProps {
   params: Promise<{
     id: string;
   }>;
@@ -8,7 +8,7 @@ interface TechnicianServiceDetailsPageProps {
 
 export default async function TechnicianServiceDetailsPage({
   params,
-}: TechnicianServiceDetailsPageProps) {
+}: ServiceDetailsPageProps) {
   const { id } = await params;
 
   return (

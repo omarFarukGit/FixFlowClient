@@ -372,6 +372,7 @@ export default function AdminServiceRequests() {
                         <td className="px-4 py-4 text-right">
                           <Button variant="outline" size="sm">
                             <Link
+                            className="flex justify-center items-center gap-2"
                               href={`/admin/service-requests/${request.id}`}
                             >
                               View Details
@@ -452,6 +453,7 @@ export default function AdminServiceRequests() {
                       <div className="flex gap-2">
                         {/* Assign / Reassign */}
                         <Button
+                        className={ ' cursor-pointer'}
                           size="sm"
                           variant={request.technician ? "outline" : "default"}
                           onClick={() => openAssignModal(request)}
@@ -463,7 +465,7 @@ export default function AdminServiceRequests() {
 
                         {/* View */}
                         <Button variant="outline" size="sm">
-                          <Link href={`/admin/service-requests/${request.id}`}>
+                          <Link className=" flex justify-center items-center" href={`/admin/service-requests/${request.id}`}>
                             View
                             <ChevronRight className="ml-1 size-4" />
                           </Link>
