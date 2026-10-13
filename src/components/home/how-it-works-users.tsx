@@ -222,7 +222,7 @@ export default function HowItWorksUsers() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            One connected platform for{" "}
+            One connected platform for
             <span className="font-semibold text-foreground">
               customers, technicians, and administrators.
             </span>

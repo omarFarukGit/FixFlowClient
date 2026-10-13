@@ -33,7 +33,7 @@ export default function AboutHero() {
 
           {/* Heading */}
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            Making Service Management{" "}
+            Making Service Management
             <span className="text-primary">Simple & Reliable</span>
           </h1>
 

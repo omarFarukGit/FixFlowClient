@@ -194,7 +194,7 @@ export default function CustomerReviews() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
             Showing {(currentPage - 1) * PAGE_SIZE + 1}-
-            {Math.min(currentPage * PAGE_SIZE, filteredReviews.length)} of{" "}
+            {Math.min(currentPage * PAGE_SIZE, filteredReviews.length)} of
             {filteredReviews.length} reviews
           </p>
 

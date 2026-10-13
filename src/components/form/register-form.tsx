@@ -292,7 +292,7 @@ export function RegisterForm() {
       <GoogleLoginComponent />
 
       <div className="text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+        Already have an account?
         <Link
           href="/login"
           className="font-medium underline underline-offset-4 hover:text-primary"

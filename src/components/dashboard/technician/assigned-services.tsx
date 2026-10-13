@@ -513,14 +513,14 @@ export default function AssignedServices() {
           {totalPages > 1 && (
             <div className="flex flex-col gap-4 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-muted-foreground">
-                Showing{" "}
-                <span className="font-medium text-foreground">{startItem}</span>{" "}
-                to{" "}
-                <span className="font-medium text-foreground">{endItem}</span>{" "}
-                of{" "}
+                Showing
+                <span className="font-medium text-foreground">{startItem}</span>
+                to
+                <span className="font-medium text-foreground">{endItem}</span>
+                of
                 <span className="font-medium text-foreground">
                   {totalItems}
-                </span>{" "}
+                </span>
                 services
               </p>
 

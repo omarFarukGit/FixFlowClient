@@ -128,7 +128,7 @@ export default function ServiceCategoryGrid() {
           </div>
 
           <p className="shrink-0 text-sm text-muted-foreground">
-            {filteredCategories.length}{" "}
+            {filteredCategories.length}
             {filteredCategories.length === 1 ? "category" : "categories"}
           </p>
         </div>
@@ -236,14 +236,14 @@ export default function ServiceCategoryGrid() {
             {totalPages > 1 && (
               <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 sm:flex-row">
                 <p className="text-sm text-muted-foreground">
-                  Showing{" "}
+                  Showing
                   <span className="font-medium text-foreground">
                     {startItem}–{endItem}
-                  </span>{" "}
-                  of{" "}
+                  </span>
+                  of
                   <span className="font-medium text-foreground">
                     {filteredCategories.length}
-                  </span>{" "}
+                  </span>
                   categories
                 </p>
 

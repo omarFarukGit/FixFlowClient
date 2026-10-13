@@ -110,15 +110,13 @@ export default function UserProfile() {
       <div className="grid gap-6 lg:grid-cols-2">
         {["profile", "account", "security", "preferences"].map((section) => (
           <Card key={section}>
-            {" "}
             <CardContent className="space-y-4 p-6">
-              {" "}
-              <div className="h-6 w-40 animate-pulse rounded bg-muted" />{" "}
-              <div className="h-4 w-full animate-pulse rounded bg-muted" />{" "}
-              <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />{" "}
-            </CardContent>{" "}
+              <div className="h-6 w-40 animate-pulse rounded bg-muted" />
+              <div className="h-4 w-full animate-pulse rounded bg-muted" />
+              <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
+            </CardContent>
           </Card>
-        ))}{" "}
+        ))}
       </div>
     );
   }
@@ -126,9 +124,7 @@ export default function UserProfile() {
   if (isError || !user) {
     return (
       <Card>
-        {" "}
         <CardContent className="flex flex-col items-center gap-3 p-8 text-center">
-          {" "}
           <p className="font-medium">Unable to load your profile.</p>
           ```
           <p className="text-sm text-muted-foreground">
@@ -167,15 +163,12 @@ export default function UserProfile() {
 
   return (
     <div className="space-y-6">
-      {/* Profile Header */}{" "}
+      {/* Profile Header */}
       <Card>
-        {" "}
         <CardContent className="p-6">
-          {" "}
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
-            {/* Avatar and image update */}{" "}
+            {/* Avatar and image update */}
             <div className="relative h-24 w-24 shrink-0">
-              {" "}
               <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-2xl font-bold text-primary">
                 {user.imageUrl ? (
                   <Image
@@ -187,7 +180,7 @@ export default function UserProfile() {
                   />
                 ) : (
                   initials
-                )}{" "}
+                )}
               </div>
               <UpdateProfileImage
                 imageUrl={user.imageUrl}
@@ -387,10 +380,8 @@ type ProfileItemProps = {
 function ProfileItem({ icon: Icon, label, value, verified }: ProfileItemProps) {
   return (
     <div className="flex items-start gap-3">
-      {" "}
       <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-        {" "}
-        <Icon className="h-4 w-4" />{" "}
+        <Icon className="h-4 w-4" />
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">

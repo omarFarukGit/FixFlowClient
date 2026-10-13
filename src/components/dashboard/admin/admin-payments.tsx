@@ -553,13 +553,13 @@ export default function AdminPayments() {
               {/* Pagination */}
               <div className="flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-muted-foreground">
-                  Showing{" "}
+                  Showing
                   {Math.min(
                     (currentPage - 1) * PAGE_SIZE + 1,
                     filteredPayments.length,
-                  )}{" "}
-                  to{" "}
-                  {Math.min(currentPage * PAGE_SIZE, filteredPayments.length)}{" "}
+                  )}
+                  to
+                  {Math.min(currentPage * PAGE_SIZE, filteredPayments.length)}
                   of {filteredPayments.length} payments
                 </p>
 

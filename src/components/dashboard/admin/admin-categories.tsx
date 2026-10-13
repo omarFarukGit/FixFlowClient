@@ -318,18 +318,18 @@ export default function AdminCategories() {
           <div className="flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
             {/* Showing info */}
             <p className="text-sm text-muted-foreground">
-              Showing{" "}
+              Showing
               <span className="font-medium text-foreground">
                 {(currentPage - 1) * ITEMS_PER_PAGE + 1}
-              </span>{" "}
-              -{" "}
+              </span>
+              -
               <span className="font-medium text-foreground">
                 {Math.min(
                   currentPage * ITEMS_PER_PAGE,
                   filteredCategories.length,
                 )}
-              </span>{" "}
-              of{" "}
+              </span>
+              of
               <span className="font-medium text-foreground">
                 {filteredCategories.length}
               </span>
@@ -425,7 +425,7 @@ export default function AdminCategories() {
             <DialogTitle>Delete Category?</DialogTitle>
 
             <DialogDescription>
-              Are you sure you want to delete{" "}
+              Are you sure you want to delete
               <strong>{deleteCategory?.name}</strong>? This action cannot be
               undone.
             </DialogDescription>

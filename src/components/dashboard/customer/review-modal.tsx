@@ -179,7 +179,7 @@ export default function ReviewModal({
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor="review-comment">
-                      Comment{" "}
+                      Comment
                       <span className="text-muted-foreground">(Optional)</span>
                     </FieldLabel>
 

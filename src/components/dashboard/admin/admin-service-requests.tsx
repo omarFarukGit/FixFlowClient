@@ -409,14 +409,14 @@ export default function AdminServiceRequests() {
                     {/* Details */}
                     <div className="space-y-2 text-sm text-muted-foreground">
                       <p>
-                        Customer:{" "}
+                        Customer:
                         <span className="text-foreground">
                           {request.customer?.name ?? request.user?.name ?? "—"}
                         </span>
                       </p>
 
                       <p>
-                        Technician:{" "}
+                        Technician:
                         <span className="text-foreground">
                           {request.technician?.user?.name ?? "Not assigned"}
                         </span>
@@ -478,7 +478,7 @@ export default function AdminServiceRequests() {
               <div className="flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-muted-foreground">
                   Showing {(currentPage - 1) * PAGE_SIZE + 1}–
-                  {Math.min(currentPage * PAGE_SIZE, filteredRequests.length)}{" "}
+                  {Math.min(currentPage * PAGE_SIZE, filteredRequests.length)}
                   of {filteredRequests.length} requests
                 </p>
 

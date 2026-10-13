@@ -391,11 +391,11 @@ export default function AdminAuditLogs() {
               {/* Pagination */}
               <div className="mt-6 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-muted-foreground">
-                  Showing{" "}
+                  Showing
                   {filteredLogs.length === 0
                     ? 0
-                    : (currentPage - 1) * PAGE_SIZE + 1}{" "}
-                  to {Math.min(currentPage * PAGE_SIZE, filteredLogs.length)} of{" "}
+                    : (currentPage - 1) * PAGE_SIZE + 1}
+                  to {Math.min(currentPage * PAGE_SIZE, filteredLogs.length)} of
                   {filteredLogs.length} logs
                 </p>
 
