@@ -21,7 +21,7 @@ export default function DashboardShell({
       <DashboardSidebar role={role} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1 cursor-pointer"  />
+          <SidebarTrigger className="-ml-1 cursor-pointer" />
           <Logout />
         </header>
         {children}

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useGetMe, useLogout } from "@/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -36,11 +36,8 @@ export default function Logout() {
     }
   };
   return (
-    <button
-    type="button"
-      onClick={handleLogout}
-    >
-      <LogOut className=" text-red-600 size-4 cursor-pointer"/>
+    <button type="button" onClick={handleLogout}>
+      <LogOut className=" text-red-600 size-4 cursor-pointer" />
     </button>
   );
 }

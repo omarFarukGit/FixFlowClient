@@ -74,7 +74,7 @@ export function Header() {
             alt="FixFlow logo"
             width={500}
             height={500}
-            className="h-11 w-11 object-contain"
+            className="h-11 w-11 object-contain cursor-pointer"
           />
         </Link>
 
@@ -103,7 +103,10 @@ export function Header() {
                 }
               >
                 <Menu className="h-5 w-5" />
-                <span className="sr-only cursor-pointer"> Open navigation menu </span>
+                <span className="sr-only cursor-pointer">
+                  {" "}
+                  Open navigation menu{" "}
+                </span>
               </SheetTrigger>
               <SheetContent
                 side="right"

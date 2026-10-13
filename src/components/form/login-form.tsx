@@ -26,6 +26,7 @@ import { UserValidation } from "@/validation";
 import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
 import { GoogleLogin } from "@react-oauth/google";
+import Link from "next/link";
 
 const demoCredentials = {
   customer: {
@@ -53,6 +54,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const { mutate: login, isPending: loginPending } = useLogin();
   const { mutate: googleLogin } = useGoogleOAuth();
+  const [activeDemo, setActiveDemo] = useState<DemoRole>("customer");
 
   const router = useRouter();
 
@@ -106,13 +108,10 @@ export function LoginForm({
   const handleDemoLogin = (role: DemoRole) => {
     const credential = demoCredentials[role];
 
+    setActiveDemo(role);
+
     form.setFieldValue("email", credential.email);
     form.setFieldValue("password", credential.password);
-
-    toast.add({
-      description: "Click Login to continue",
-      type: "success",
-    });
   };
 
   const handleGoogleSuccess = (credentialResponse: { credential?: string }) => {
@@ -163,37 +162,20 @@ export function LoginForm({
 
         <CardContent>
           {/* Demo Credentials */}
-          <div className="mb-6 rounded-lg border bg-muted/40 p-4">
-            <p className="mb-3 text-sm font-medium">Demo Login</p>
 
-            <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-2 mb-2">
+            {(Object.keys(demoCredentials) as DemoRole[]).map((role) => (
               <Button
+                key={role}
                 type="button"
-                variant="outline"
+                variant={activeDemo === role ? "default" : "outline"}
                 size="sm"
-                onClick={() => handleDemoLogin("customer")}
+                onClick={() => handleDemoLogin(role)}
+                className="cursor-pointer"
               >
-                Customer
+                {demoCredentials[role].label}
               </Button>
-
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => handleDemoLogin("technician")}
-              >
-                Technician
-              </Button>
-
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => handleDemoLogin("admin")}
-              >
-                Admin
-              </Button>
-            </div>
+            ))}
           </div>
 
           <form
@@ -243,12 +225,12 @@ export function LoginForm({
                       <div className="flex items-center">
                         <FieldLabel htmlFor="password">Password</FieldLabel>
 
-                        <a
+                        {/* <a
                           href="/forgot-password"
                           className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                         >
                           Forgot your password?
-                        </a>
+                        </a> */}
                       </div>
 
                       <div className="relative">
@@ -268,9 +250,9 @@ export function LoginForm({
                           onClick={() => setShowPassword((prev) => !prev)}
                         >
                           {showPassword ? (
-                            <EyeClosed className="size-4" />
+                            <EyeClosed className="size-4 cursor-pointer" />
                           ) : (
-                            <Eye className="size-4" />
+                            <Eye className="size-4 cursor-pointer" />
                           )}
                         </button>
                       </div>
@@ -288,12 +270,12 @@ export function LoginForm({
                 <Button
                   disabled={loginPending}
                   type="submit"
-                  className="w-full"
+                  className="w-full cursor-pointer"
                 >
                   {loginPending ? (
                     <>
                       <Spinner />
-                      Submitting...
+                      Loging..
                     </>
                   ) : (
                     "Login"
@@ -308,9 +290,12 @@ export function LoginForm({
 
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?
-                  <a href="/register" className="underline underline-offset-4">
+                  <Link
+                    href="/register"
+                    className="cursor-pointer underline underline-offset-4"
+                  >
                     Register
-                  </a>
+                  </Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
