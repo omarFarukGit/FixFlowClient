@@ -10,7 +10,7 @@ export function ModeToggle() {
     <button
       type="button"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="rounded-md border p-2"
+      className="rounded-md border p-2 cursor-pointer"
     >
       {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
     </button>

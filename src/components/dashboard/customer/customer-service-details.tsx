@@ -40,7 +40,7 @@ export default function CustomerServiceDetails({
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 p-5">
         <Skeleton className="h-9 w-48" />
 
         <div className="grid gap-6 lg:grid-cols-3">
@@ -101,7 +101,7 @@ export default function CustomerServiceDetails({
     statusConfig2[service.status as ServiceStatus] ?? statusConfig2.PENDING;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-5">
       {/* Back */}
       <Button variant="ghost" className="-ml-2 ">
         <Link

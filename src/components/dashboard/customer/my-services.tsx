@@ -68,7 +68,8 @@ export default function MyServices() {
   }
 
   return (
-    <Card>
+    <div className=" p-5">
+      <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>My Service Requests</CardTitle>
@@ -103,6 +104,7 @@ export default function MyServices() {
         </Link>
       </CardContent>
     </Card>
+    </div>
   );
 }
 

@@ -61,7 +61,7 @@ export default function PaymentList() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 p-5">
       {payments.map((payment) => (
         <PaymentCard key={payment.id} payment={payment} />
       ))}
