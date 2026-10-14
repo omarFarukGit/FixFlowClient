@@ -49,10 +49,10 @@ export default function CtaSection() {
             {/* Actions */}
             <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
               <Link
-                href="/services"
+                href="/customer/services"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 text-sm font-semibold text-primary shadow-sm transition-all hover:bg-white/90 hover:shadow-md"
               >
-                Book a Service
+                Create a Service
                 <ArrowRight className="size-4" />
               </Link>
 

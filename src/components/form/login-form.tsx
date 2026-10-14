@@ -149,14 +149,6 @@ export function LoginForm({
     );
   };
 
-  const handleGoogleError = () => {
-    toast.add({
-      title: "Google Login Failed",
-      description: "Unable to login with Google",
-      type: "error",
-    });
-  };
-
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>

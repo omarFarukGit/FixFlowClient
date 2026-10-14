@@ -7,49 +7,41 @@ import { useRouter } from "next/navigation";
 
 export default function GoogleLoginComponent() {
   const router = useRouter();
-  const { mutate: googleLogin } = useGoogleOAuth();
+  const { mutate: googleOAuth, isPending } = useGoogleOAuth();
 
   const handleGoogleSuccess = (credentialResponse: { credential?: string }) => {
     const idToken = credentialResponse.credential;
+    console.log(idToken);
 
     if (!idToken) {
       toast.add({
         title: "Google OAuth Failed",
-        description: "Something went wrong. Please try again",
         type: "error",
       });
       return;
     }
 
-    googleLogin(
+    googleOAuth(
       { idToken },
       {
         onSuccess: () => {
           toast.add({
-            title: "Logged in Successfully",
-            description: "Welcome back",
-            type: "success",
+            title: "Google login successful",
           });
-          router.push("/");
+
+          router.replace("/customer");
+          router.refresh();
         },
-        onError: (err) => {
+        onError: (error) => {
+          console.error("Google login failed:", error);
+
           toast.add({
-            title: "Google OAuth Failed",
-            description:
-              err.message || "Something went wrong. Please try again",
+            title: "Google login failed",
             type: "error",
           });
         },
       },
     );
-  };
-
-  const handleGoogleError = () => {
-    toast.add({
-      title: "Google OAuth Failed",
-      description: "Something went wrong. Please try again",
-      type: "error",
-    });
   };
 
   return (
@@ -58,7 +50,12 @@ export default function GoogleLoginComponent() {
       shape="pill"
       text="continue_with"
       onSuccess={handleGoogleSuccess}
-      onError={handleGoogleError}
+      onError={() => {
+        toast.add({
+          title: "Google authentication failed",
+          type: "error",
+        });
+      }}
     />
   );
 }

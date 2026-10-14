@@ -50,7 +50,7 @@ const workflowSteps = [
 
 export default function ServiceWorkflow() {
   return (
-    <section className="relative overflow-hidden bg-muted/30 py-16 sm:py-20 lg:py-24">
+    <section className="relative overflow-hidden bg-muted/30 py-10 sm:py-20 lg:py-24">
       {/* Background Decorations */}
       <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
       <div className="pointer-events-none absolute -right-40 bottom-10 h-80 w-80 rounded-full bg-accent/10 blur-3xl" />

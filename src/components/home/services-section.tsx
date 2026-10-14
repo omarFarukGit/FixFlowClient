@@ -58,7 +58,7 @@ const serviceCategories = [
 
 export default function ServicesSection() {
   return (
-    <section className="bg-background py-20 md:py-28">
+    <section className="bg-background py-10 md:py-20">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="mx-auto mb-12 max-w-2xl text-center">

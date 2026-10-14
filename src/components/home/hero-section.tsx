@@ -40,7 +40,7 @@ export default function HeroSection() {
                 href="/services"
                 className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary/90"
               >
-                Book a Service
+                Explore Our Service
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
               </Link>
 

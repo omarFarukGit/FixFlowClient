@@ -1,6 +1,5 @@
 import CustomerServiceDetails from "@/components/dashboard/customer/customer-service-details";
 
-
 interface ServiceDetailsPageProps {
   params: Promise<{
     id: string;
@@ -12,5 +11,5 @@ export default async function TechnicianServiceDetailsPage({
 }: ServiceDetailsPageProps) {
   const { id } = await params;
 
-  return <CustomerServiceDetails serviceRequestId={id}/>
+  return <CustomerServiceDetails serviceRequestId={id} />;
 }
