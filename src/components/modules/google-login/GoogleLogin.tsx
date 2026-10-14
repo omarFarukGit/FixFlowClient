@@ -45,17 +45,16 @@ export default function GoogleLoginComponent() {
   };
 
   return (
-    <GoogleLogin
-      theme="outline"
-      shape="pill"
-      text="continue_with"
-      onSuccess={handleGoogleSuccess}
-      onError={() => {
-        toast.add({
-          title: "Google authentication failed",
-          type: "error",
-        });
-      }}
-    />
+    <div className="w-full flex justify-center items-center ">
+      <GoogleLogin
+        onSuccess={handleGoogleSuccess}
+        onError={() => {
+          toast.add({
+            title: "Google authentication failed",
+            type: "error",
+          });
+        }}
+      />
+    </div>
   );
 }

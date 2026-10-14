@@ -283,16 +283,18 @@ export function LoginForm({
                 </Button>
 
                 {/* Google */}
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={() => {
-                    toast.add({
-                      title: "Google authentication failed",
-                      type: "error",
-                    });
-                  }}
-                />
 
+                <div className="w-full flex justify-center items-center ">
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => {
+                      toast.add({
+                        title: "Google authentication failed",
+                        type: "error",
+                      });
+                    }}
+                  />
+                </div>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?
                   <Link
